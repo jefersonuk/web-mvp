@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GREGO | Jornada em Grego Koiné</title>
+    <meta
+      name="description"
+      content="Game web para progressão em grego koiné, da alfabetização à exegese do Novo Testamento."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero__copy">
+          <p class="eyebrow">Projeto-base do game</p>
+          <h1>Da alfabetização grega à exegese.</h1>
+          <p class="hero__text">
+            Um app web modular para transformar o estudo do grego koiné em uma
+            trilha progressiva, prática e jogável.
+          </p>
+          <div class="hero__actions">
+            <button id="resume-button" class="button button--primary">
+              Continuar jornada
+            </button>
+            <button id="reset-button" class="button button--ghost">
+              Reiniciar progresso
+            </button>
+          </div>
+        </div>
+
+        <aside class="hero__panel">
+          <p class="panel__label">Livro-base do curso</p>
+          <h2 class="hero__panel-title">Noções do Grego Bíblico</h2>
+          <p class="hero__panel-text">
+            Lourenço Stelio Rega e Johannes Bergmann. A progressão do game
+            seguirá este livro como espinha dorsal pedagógica.
+          </p>
+          <p class="panel__label panel__label--spaced">Vocação do app</p>
+          <ul class="panel__list">
+            <li>Leitura direta do texto grego</li>
+            <li>Progressão didática acumulativa</li>
+            <li>Exercícios com feedback imediato</li>
+            <li>Exegese baseada no original</li>
+          </ul>
+        </aside>
+      </header>
+
+      <main class="dashboard">
+        <section class="stats">
+          <article class="stat-card">
+            <p class="stat-card__label">Nível atual</p>
+            <strong id="current-level" class="stat-card__value">1</strong>
+            <span id="current-rank" class="stat-card__meta">Leitor introdutório</span>
+          </article>
+
+          <article class="stat-card">
+            <p class="stat-card__label">XP total</p>
+            <strong id="xp-total" class="stat-card__value">0</strong>
+            <span class="stat-card__meta">Cada acerto gera avanço real</span>
+          </article>
+
+          <article class="stat-card">
+            <p class="stat-card__label">Precisão</p>
+            <strong id="accuracy-rate" class="stat-card__value">0%</strong>
+            <span class="stat-card__meta">Com base nas respostas atuais</span>
+          </article>
+
+          <article class="stat-card">
+            <p class="stat-card__label">Cards dominados</p>
+            <strong id="cards-mastered" class="stat-card__value">0</strong>
+            <span id="cards-mastered-meta" class="stat-card__meta">0 de 0 cartões</span>
+          </article>
+        </section>
+
+        <section class="workspace">
+          <div class="path-card">
+            <div class="section-heading">
+              <p class="eyebrow">Mapa formativo</p>
+              <h2>Trilha do game</h2>
+            </div>
+            <div id="module-path" class="module-path" aria-live="polite"></div>
+          </div>
+
+          <div class="lesson-card">
+            <div class="section-heading">
+              <p class="eyebrow">Missão ativa</p>
+              <h2 id="lesson-title">Carregando lição</h2>
+            </div>
+
+            <div class="lesson-meta">
+              <span id="lesson-module" class="lesson-chip">Módulo</span>
+              <span id="lesson-progress" class="lesson-chip lesson-chip--soft">
+                0 de 0 desafios
+              </span>
+            </div>
+
+            <p id="lesson-objective" class="lesson-objective"></p>
+            <p id="lesson-explanation" class="lesson-explanation"></p>
+            <div id="lesson-key-points" class="key-points"></div>
+
+            <div class="challenge-card">
+              <div class="challenge-card__header">
+                <p class="eyebrow">Desafio</p>
+                <span id="challenge-counter" class="challenge-counter"></span>
+              </div>
+
+              <div id="prompt-panel" class="prompt-panel"></div>
+              <div id="choices" class="choices" role="list"></div>
+              <div id="feedback" class="feedback" aria-live="polite"></div>
+            </div>
+
+            <div class="lesson-actions">
+              <button id="next-button" class="button button--primary" disabled>
+                Próximo desafio
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="vocab-section">
+          <div class="vocab-section__header section-heading">
+            <p class="eyebrow">Vocabulário base</p>
+            <h2>Deck completo em cartões</h2>
+            <p class="lesson-explanation">
+              O vocabulário importado do PDF de cartões fica disponível aqui
+              para revisão contínua, busca, marcação de domínio e estudo
+              progressivo.
+            </p>
+          </div>
+
+          <div class="vocab-toolbar">
+            <label class="search-field" for="vocab-search">
+              <span class="search-field__label">Buscar termo ou glosa</span>
+              <input
+                id="vocab-search"
+                class="search-field__input"
+                type="search"
+                placeholder="Ex.: logos, fé, ouvir, artigo..."
+              />
+            </label>
+
+            <div class="filter-group" aria-label="Filtro do vocabulário">
+              <button type="button" class="filter-chip is-active" data-filter="all">
+                Todos
+              </button>
+              <button type="button" class="filter-chip" data-filter="review">
+                Em revisão
+              </button>
+              <button type="button" class="filter-chip" data-filter="mastered">
+                Dominados
+              </button>
+            </div>
+          </div>
+
+          <div class="vocab-grid">
+            <article class="flashcard-panel">
+              <div class="flashcard-panel__top">
+                <div>
+                  <p class="eyebrow">Card atual</p>
+                  <h3 id="vocab-term" class="flashcard-term">Termo</h3>
+                </div>
+                <span id="vocab-position" class="lesson-chip">0 de 0</span>
+              </div>
+
+              <div id="flashcard" class="flashcard">
+                <p id="vocab-frequency" class="flashcard-frequency"></p>
+                <p id="vocab-gloss" class="flashcard-gloss">
+                  Revele o sentido para estudar a glosa deste cartão.
+                </p>
+                <p id="vocab-page" class="flashcard-page"></p>
+              </div>
+
+              <div class="flashcard-actions">
+                <button id="reveal-card-button" class="button button--ghost">
+                  Revelar sentido
+                </button>
+                <button id="toggle-mastered-button" class="button button--primary">
+                  Marcar como dominado
+                </button>
+                <button id="next-card-button" class="button button--ghost">
+                  Próximo card
+                </button>
+                <button id="random-card-button" class="button button--ghost">
+                  Card aleatório
+                </button>
+              </div>
+            </article>
+
+            <aside class="results-panel">
+              <div class="results-panel__top">
+                <div>
+                  <p class="eyebrow">Lista ativa</p>
+                  <h3>Resultados</h3>
+                </div>
+                <span id="vocab-results-count" class="challenge-counter">0 cartões</span>
+              </div>
+
+              <div id="vocab-results" class="results-list"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="notes-grid">
+          <article class="note-card">
+            <p class="eyebrow">Fonte-base</p>
+            <h3>Currículo ancorado no livro</h3>
+            <p>
+              O game passa a usar <em>Noções do Grego Bíblico</em> como trilha
+              de referência, adaptando o conteúdo em fases jogáveis sem perder
+              a lógica didática da obra.
+            </p>
+          </article>
+
+          <article class="note-card">
+            <p class="eyebrow">Método</p>
+            <h3>Como esta base vai crescer</h3>
+            <p>
+              Cada módulo futuro pode combinar vocabulário, parsing, leitura
+              guiada, tradução e desafios exegéticos com textos reais do NT.
+            </p>
+          </article>
+
+          <article class="note-card">
+            <p class="eyebrow">Próximos níveis</p>
+            <h3>Rota já prevista</h3>
+            <p>
+              Módulo 1 nas páginas 11 a 44; depois, presente do subjuntivo,
+              futuro, sistema nominal e leitura exegética progressiva.
+            </p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./vocabulary-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
