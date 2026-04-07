@@ -1404,8 +1404,25 @@ function normalizeForSearch(value) {
     .trim();
 }
 
+function normalizeOcrBetaCode(value) {
+  let text = String(value || "")
+    .replaceAll("ö", ")/")
+    .replaceAll("Ö", "(/")
+    .replaceAll("ü", ")=")
+    .replaceAll("Ü", "(=");
+
+  let previous = "";
+
+  while (previous !== text) {
+    previous = text;
+    text = text.replace(/([A-Za-z*()/=+|])\s+([A-Za-z*])/g, "$1$2");
+  }
+
+  return text;
+}
+
 function betaCodeToGreekBase(value) {
-  const source = String(value || "")
+  const source = normalizeOcrBetaCode(value)
     .toLowerCase()
     .replace(/[*()/\\=|+[\]{}<>.,;:!?_-]/g, "");
   const map = {
@@ -1437,8 +1454,118 @@ function betaCodeToGreekBase(value) {
 
   return source
     .split("")
-    .map((character) => map[character] || character)
+    .map((character) => (character === "j" ? "ς" : map[character] || character))
     .join("");
+}
+
+function convertBetaCodeToken(token) {
+  const letterMap = {
+    a: "α",
+    b: "β",
+    g: "γ",
+    d: "δ",
+    e: "ε",
+    z: "ζ",
+    h: "η",
+    q: "θ",
+    i: "ι",
+    k: "κ",
+    l: "λ",
+    m: "μ",
+    n: "ν",
+    c: "ξ",
+    o: "ο",
+    p: "π",
+    r: "ρ",
+    s: "σ",
+    t: "τ",
+    u: "υ",
+    f: "φ",
+    x: "χ",
+    y: "ψ",
+    w: "ω",
+    j: "σ",
+  };
+  const diacriticMap = {
+    ")": "\u0313",
+    "(": "\u0314",
+    "/": "\u0301",
+    "\\": "\u0300",
+    "=": "\u0342",
+    "+": "\u0308",
+    "|": "\u0345",
+  };
+  let output = "";
+  let uppercasePending = false;
+
+  for (let index = 0; index < token.length; index += 1) {
+    const character = token[index];
+
+    if (character === "*") {
+      uppercasePending = true;
+      continue;
+    }
+
+    const lowerCharacter = character.toLowerCase();
+
+    if (!letterMap[lowerCharacter]) {
+      output += character;
+      continue;
+    }
+
+    let baseLetter = letterMap[lowerCharacter];
+    const hasNextLetter = /[A-Za-z]/.test(token.slice(index + 1));
+
+    if ((lowerCharacter === "s" || lowerCharacter === "j") && !uppercasePending) {
+      baseLetter = hasNextLetter ? "σ" : "ς";
+    }
+
+    if (uppercasePending) {
+      baseLetter = baseLetter.toUpperCase();
+      uppercasePending = false;
+    }
+
+    let marks = "";
+    while (index + 1 < token.length && diacriticMap[token[index + 1]]) {
+      marks += diacriticMap[token[index + 1]];
+      index += 1;
+    }
+
+    output += `${baseLetter}${marks}`;
+  }
+
+  return output.normalize("NFC");
+}
+
+function convertBetaCodeToGreek(value) {
+  const text = String(value || "");
+
+  if (!text) {
+    return text;
+  }
+
+  if (/[\u0370-\u03ff\u1f00-\u1fff]/u.test(text)) {
+    return text;
+  }
+
+  const normalized = normalizeOcrBetaCode(text);
+
+  return normalized.replace(/[*A-Za-z()/=+|]+/g, (token) => {
+    if (!/[A-Za-z]/.test(token)) {
+      return token;
+    }
+
+    return convertBetaCodeToken(token);
+  });
+}
+
+function getCardDisplayTerm(card) {
+  return convertBetaCodeToGreek(card.term);
+}
+
+function getCardDisplayTermWithFrequency(card) {
+  const baseTerm = getCardDisplayTerm(card);
+  return card.frequency ? `${baseTerm} (${card.frequency})` : baseTerm;
 }
 
 function getSearchableCardValues(card) {
@@ -1448,6 +1575,9 @@ function getSearchableCardValues(card) {
     card.gloss,
     card.lemma,
     card.lemmaGloss,
+    convertBetaCodeToGreek(card.term),
+    convertBetaCodeToGreek(card.displayTerm),
+    convertBetaCodeToGreek(card.lemma),
     betaCodeToGreekBase(card.term),
     betaCodeToGreekBase(card.displayTerm),
     betaCodeToGreekBase(card.lemma),
@@ -1963,9 +2093,10 @@ function renderVocabulary() {
 
   const currentIndex = filteredCards.findIndex((card) => card.id === currentCard.id);
   const isMastered = state.masteredCardIds.includes(currentCard.id);
+  const displayedCurrentTerm = getCardDisplayTerm(currentCard);
 
-  refs.vocabTerm.textContent = currentCard.term;
-  refs.vocabTerm.classList.toggle("greek-text", shouldUseGreekFont(currentCard.term));
+  refs.vocabTerm.textContent = displayedCurrentTerm;
+  refs.vocabTerm.classList.toggle("greek-text", shouldUseGreekFont(displayedCurrentTerm));
   refs.vocabPosition.textContent = `${currentIndex + 1} de ${filteredCards.length}`;
   refs.vocabFrequency.textContent = currentCard.meta
     ? currentCard.meta
@@ -2024,8 +2155,8 @@ function renderVocabulary() {
       vocabWasCorrect ? "feedback--success" : "feedback--error"
     );
     refs.vocabFeedback.innerHTML = vocabWasCorrect
-      ? `<strong>Correto.</strong> ${currentCard.term} significa “${currentCard.gloss}”.`
-      : `<strong>Quase.</strong> A glosa principal de ${currentCard.term} é “${currentCard.gloss}”.`;
+      ? `<strong>Correto.</strong> ${displayedCurrentTerm} significa “${currentCard.gloss}”.`
+      : `<strong>Quase.</strong> A glosa principal de ${displayedCurrentTerm} é “${currentCard.gloss}”.`;
   } else {
     refs.vocabFeedback.textContent =
       "Marque a tradução correta para virar o card e confirmar o sentido.";
@@ -2049,7 +2180,8 @@ function renderVocabularyResults(filteredCards, currentCard, currentIndex) {
         ? "Dominado"
         : "Em revisão";
       const activeClass = card.id === currentCard.id ? " is-active" : "";
-      const greekTermClass = shouldUseGreekFont(card.displayTerm) ? " greek-text" : "";
+      const displayedTerm = getCardDisplayTermWithFrequency(card);
+      const greekTermClass = shouldUseGreekFont(displayedTerm) ? " greek-text" : "";
       const hint = card.pageLabel
         ? card.pageLabel
         : card.frequency
@@ -2059,7 +2191,7 @@ function renderVocabularyResults(filteredCards, currentCard, currentIndex) {
       return `
         <button class="result-item${activeClass}" type="button" data-card-id="${card.id}">
           <span class="result-item__meta">${masteredLabel}</span>
-          <span class="result-item__term${greekTermClass}">${card.displayTerm}</span>
+          <span class="result-item__term${greekTermClass}">${escapeHtml(displayedTerm)}</span>
           <span class="result-item__hint">${escapeHtml(truncate(hint, 88))}</span>
         </button>
       `;
