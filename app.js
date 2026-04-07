@@ -1346,6 +1346,52 @@ function shouldUseGreekFont(value) {
   return /[\u0370-\u03ff\u1f00-\u1fff]/u.test(text) || /[()/=+|\\ö]/u.test(text);
 }
 
+function splitChoiceLabel(value) {
+  const text = String(value || "");
+
+  if (!text.includes("|")) {
+    return null;
+  }
+
+  const [greekPart, ...translationParts] = text.split("|");
+  const greek = greekPart.trim();
+  const translation = translationParts.join("|").trim();
+
+  if (!greek || !translation) {
+    return null;
+  }
+
+  return { greek, translation };
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function getChoiceLabelMarkup(value) {
+  const splitLabel = splitChoiceLabel(value);
+
+  if (splitLabel) {
+    return `
+      <span class="choice-button__content">
+        <span class="choice-button__greek greek-text">${escapeHtml(splitLabel.greek)}</span>
+        <span class="choice-button__translation">${escapeHtml(splitLabel.translation)}</span>
+      </span>
+    `;
+  }
+
+  if (shouldUseGreekFont(value)) {
+    return `<span class="choice-button__greek greek-text">${escapeHtml(value)}</span>`;
+  }
+
+  return `<span class="choice-button__translation">${escapeHtml(value)}</span>`;
+}
+
 function getVocabularyDeckById(deckId) {
   return vocabularyDecks.find((deck) => deck.id === deckId) || vocabularyDecks[0];
 }
@@ -1594,11 +1640,10 @@ function renderLesson() {
   refs.choices.innerHTML = "";
   orderedOptions.forEach((option) => {
     const button = document.createElement("button");
-    button.className = shouldUseGreekFont(option)
-      ? "choice-button greek-text"
-      : "choice-button";
+    button.className = "choice-button";
     button.type = "button";
-    button.textContent = option;
+    button.dataset.optionValue = option;
+    button.innerHTML = getChoiceLabelMarkup(option);
     button.addEventListener("click", () => handleAnswer(option, challenge, lesson));
     refs.choices.appendChild(button);
   });
@@ -1620,9 +1665,9 @@ function handleAnswer(option, challenge, lesson) {
   choiceButtons.forEach((button) => {
     button.disabled = true;
 
-    if (button.textContent === challenge.answer) {
+    if (button.dataset.optionValue === challenge.answer) {
       button.classList.add("is-correct");
-    } else if (button.textContent === option) {
+    } else if (button.dataset.optionValue === option) {
       button.classList.add("is-wrong");
     }
   });
@@ -1638,9 +1683,10 @@ function handleAnswer(option, challenge, lesson) {
     refs.feedback.classList.add("feedback--success");
     refs.feedback.innerHTML = `<strong>Correto.</strong> ${challenge.insight}`;
   } else {
-    const answerClass = shouldUseGreekFont(challenge.answer) ? " class=\"greek-text\"" : "";
     refs.feedback.classList.add("feedback--error");
-    refs.feedback.innerHTML = `<strong>Quase.</strong> A resposta correta é <strong${answerClass}>${challenge.answer}</strong>. ${challenge.insight}`;
+    refs.feedback.innerHTML = `<strong>Quase.</strong> A resposta correta é <strong class="feedback-answer">${getChoiceLabelMarkup(
+      challenge.answer
+    )}</strong>. ${challenge.insight}`;
   }
 
   refs.nextButton.disabled = false;

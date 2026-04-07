@@ -470,13 +470,26 @@ h3 {
   color: var(--ink);
 }
 
+.choice-button__content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px 14px;
+}
+
+.choice-button__greek {
+  font-size: 1.08rem;
+}
+
+.choice-button__translation {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  color: var(--ink);
+}
+
 .choice-button:hover:not(:disabled) {
   border-color: rgba(35, 92, 91, 0.32);
   background: rgba(35, 92, 91, 0.08);
-}
-
-.choice-button.greek-text {
-  font-size: 1.08rem;
 }
 
 .choice-button.is-correct {
@@ -514,6 +527,13 @@ h3 {
   border-color: rgba(180, 79, 53, 0.24);
   background: rgba(180, 79, 53, 0.08);
   color: #702f1b;
+}
+
+.feedback-answer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: baseline;
 }
 
 .vocab-section {
