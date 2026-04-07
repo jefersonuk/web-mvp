@@ -674,6 +674,14 @@ h3 {
   box-shadow: inset 0 0 0 1px rgba(35, 92, 91, 0.08);
 }
 
+.vocab-challenge {
+  margin-top: 18px;
+}
+
+.choice-button--vocab {
+  font-size: 1rem;
+}
+
 .flashcard-actions {
   display: flex;
   flex-wrap: wrap;
@@ -711,7 +719,7 @@ h3 {
   color: var(--ink);
 }
 
-.result-item__gloss {
+.result-item__hint {
   color: var(--ink-soft);
   line-height: 1.55;
 }

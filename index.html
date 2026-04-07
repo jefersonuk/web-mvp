@@ -143,12 +143,12 @@
             </label>
 
             <label class="search-field" for="vocab-search">
-              <span class="search-field__label">Buscar termo ou glosa</span>
+              <span class="search-field__label">Buscar em grego ou português</span>
               <input
                 id="vocab-search"
                 class="search-field__input"
                 type="search"
-                placeholder="Ex.: logos, fé, ouvir, artigo..."
+                placeholder="Ex.: λόγος, logos, fé, ouvir, artigo..."
               />
             </label>
 
@@ -178,15 +178,23 @@
               <div id="flashcard" class="flashcard">
                 <p id="vocab-frequency" class="flashcard-frequency"></p>
                 <p id="vocab-gloss" class="flashcard-gloss">
-                  Revele o sentido para estudar a glosa deste cartão.
+                  Escolha uma opção abaixo para revelar o sentido deste cartão.
                 </p>
                 <p id="vocab-page" class="flashcard-page"></p>
               </div>
 
+              <div class="vocab-challenge">
+                <div class="challenge-card__header">
+                  <p class="eyebrow">Escolha o sentido</p>
+                  <span class="challenge-counter">4 opções</span>
+                </div>
+                <div id="vocab-choices" class="choices"></div>
+                <div id="vocab-feedback" class="feedback" aria-live="polite">
+                  Marque a tradução correta para virar o card e confirmar o sentido.
+                </div>
+              </div>
+
               <div class="flashcard-actions">
-                <button id="reveal-card-button" class="button button--ghost">
-                  Revelar sentido
-                </button>
                 <button id="toggle-mastered-button" class="button button--primary">
                   Marcar como dominado
                 </button>
@@ -202,8 +210,8 @@
             <aside class="results-panel">
               <div class="results-panel__top">
                 <div>
-                  <p class="eyebrow">Lista ativa</p>
-                  <h3>Resultados</h3>
+                  <p class="eyebrow">Busca rápida</p>
+                  <h3>Termos encontrados</h3>
                 </div>
                 <span id="vocab-results-count" class="challenge-counter">0 cartões</span>
               </div>

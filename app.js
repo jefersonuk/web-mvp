@@ -1144,12 +1144,13 @@ const refs = {
   vocabSearch: document.querySelector("#vocab-search"),
   filterChips: Array.from(document.querySelectorAll(".filter-chip")),
   flashcard: document.querySelector("#flashcard"),
+  vocabChoices: document.querySelector("#vocab-choices"),
+  vocabFeedback: document.querySelector("#vocab-feedback"),
   vocabTerm: document.querySelector("#vocab-term"),
   vocabPosition: document.querySelector("#vocab-position"),
   vocabFrequency: document.querySelector("#vocab-frequency"),
   vocabGloss: document.querySelector("#vocab-gloss"),
   vocabPage: document.querySelector("#vocab-page"),
-  revealCardButton: document.querySelector("#reveal-card-button"),
   toggleMasteredButton: document.querySelector("#toggle-mastered-button"),
   nextCardButton: document.querySelector("#next-card-button"),
   randomCardButton: document.querySelector("#random-card-button"),
@@ -1160,6 +1161,11 @@ const refs = {
 const state = loadProgress();
 let interactionLocked = false;
 let isCardRevealed = false;
+let vocabChallengeKey = "";
+let vocabChoiceOptions = [];
+let vocabChoiceLocked = false;
+let vocabSelectedOption = null;
+let vocabWasCorrect = null;
 
 document.title = `GREGO | ${sourceBook.title}`;
 
@@ -1181,7 +1187,7 @@ refs.resetButton.addEventListener("click", () => {
 
   Object.assign(state, clone(defaultProgress));
   interactionLocked = false;
-  isCardRevealed = false;
+  resetVocabularyChallengeState();
   saveProgress();
   render();
 });
@@ -1189,7 +1195,7 @@ refs.resetButton.addEventListener("click", () => {
 refs.vocabDeckSelect.addEventListener("change", (event) => {
   state.vocabDeckId = event.target.value || "full";
   state.currentCardId = getActiveVocabularyCards()[0]?.id || null;
-  isCardRevealed = false;
+  resetVocabularyChallengeState();
   renderStats();
   renderVocabulary();
   saveProgress();
@@ -1197,7 +1203,7 @@ refs.vocabDeckSelect.addEventListener("change", (event) => {
 
 refs.vocabSearch.addEventListener("input", (event) => {
   state.vocabSearch = event.target.value.trim();
-  isCardRevealed = false;
+  resetVocabularyChallengeState();
   renderVocabulary();
   saveProgress();
 });
@@ -1205,15 +1211,10 @@ refs.vocabSearch.addEventListener("input", (event) => {
 refs.filterChips.forEach((chip) => {
   chip.addEventListener("click", () => {
     state.vocabFilter = chip.dataset.filter || "all";
-    isCardRevealed = false;
+    resetVocabularyChallengeState();
     renderVocabulary();
     saveProgress();
   });
-});
-
-refs.revealCardButton.addEventListener("click", () => {
-  isCardRevealed = !isCardRevealed;
-  renderVocabulary();
 });
 
 refs.toggleMasteredButton.addEventListener("click", () => {
@@ -1247,7 +1248,7 @@ refs.nextCardButton.addEventListener("click", () => {
   const currentIndex = filteredCards.findIndex((card) => card.id === state.currentCardId);
   const nextIndex = currentIndex >= 0 ? (currentIndex + 1) % filteredCards.length : 0;
   state.currentCardId = filteredCards[nextIndex].id;
-  isCardRevealed = false;
+  resetVocabularyChallengeState();
   renderVocabulary();
   saveProgress();
 });
@@ -1269,7 +1270,7 @@ refs.randomCardButton.addEventListener("click", () => {
     state.currentCardId = randomCard.id;
   }
 
-  isCardRevealed = false;
+  resetVocabularyChallengeState();
   renderVocabulary();
   saveProgress();
 });
@@ -1392,6 +1393,78 @@ function getChoiceLabelMarkup(value) {
   return `<span class="choice-button__translation">${escapeHtml(value)}</span>`;
 }
 
+function normalizeForSearch(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replaceAll("ς", "σ")
+    .replace(/[’'`´]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function betaCodeToGreekBase(value) {
+  const source = String(value || "")
+    .toLowerCase()
+    .replace(/[*()/\\=|+[\]{}<>.,;:!?_-]/g, "");
+  const map = {
+    a: "α",
+    b: "β",
+    g: "γ",
+    d: "δ",
+    e: "ε",
+    z: "ζ",
+    h: "η",
+    q: "θ",
+    i: "ι",
+    k: "κ",
+    l: "λ",
+    m: "μ",
+    n: "ν",
+    c: "ξ",
+    o: "ο",
+    p: "π",
+    r: "ρ",
+    s: "σ",
+    t: "τ",
+    u: "υ",
+    f: "φ",
+    x: "χ",
+    y: "ψ",
+    w: "ω",
+  };
+
+  return source
+    .split("")
+    .map((character) => map[character] || character)
+    .join("");
+}
+
+function getSearchableCardValues(card) {
+  return [
+    card.term,
+    card.displayTerm,
+    card.gloss,
+    card.lemma,
+    card.lemmaGloss,
+    betaCodeToGreekBase(card.term),
+    betaCodeToGreekBase(card.displayTerm),
+    betaCodeToGreekBase(card.lemma),
+  ]
+    .filter(Boolean)
+    .map((value) => normalizeForSearch(value));
+}
+
+function resetVocabularyChallengeState() {
+  isCardRevealed = false;
+  vocabChallengeKey = "";
+  vocabChoiceOptions = [];
+  vocabChoiceLocked = false;
+  vocabSelectedOption = null;
+  vocabWasCorrect = null;
+}
+
 function getVocabularyDeckById(deckId) {
   return vocabularyDecks.find((deck) => deck.id === deckId) || vocabularyDecks[0];
 }
@@ -1402,6 +1475,88 @@ function getActiveVocabularyDeck() {
 
 function getActiveVocabularyCards() {
   return getActiveVocabularyDeck().cards;
+}
+
+function getVocabularyChoiceOptions(currentCard) {
+  const activeCards = getActiveVocabularyCards();
+  const correctAnswer = currentCard.gloss;
+  const distractorPool = activeCards.filter(
+    (card) =>
+      card.id !== currentCard.id &&
+      normalizeForSearch(card.gloss) !== normalizeForSearch(correctAnswer)
+  );
+  const distractorSeed = createSeedFromString(
+    `${getActiveVocabularyDeck().id}:${currentCard.id}:distractors`
+  );
+  const distractorRandom = createSeededRandom(distractorSeed);
+  const shuffledPool = [...distractorPool];
+
+  for (let index = shuffledPool.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(distractorRandom() * (index + 1));
+    [shuffledPool[index], shuffledPool[swapIndex]] = [
+      shuffledPool[swapIndex],
+      shuffledPool[index],
+    ];
+  }
+
+  const distractors = [];
+
+  shuffledPool.forEach((card) => {
+    if (distractors.length >= 3) {
+      return;
+    }
+
+    if (!distractors.includes(card.gloss)) {
+      distractors.push(card.gloss);
+    }
+  });
+
+  const options = [correctAnswer, ...distractors];
+  const answerIndexSeed = createSeedFromString(
+    `${getActiveVocabularyDeck().id}:${currentCard.id}:answer-index`
+  );
+  const correctIndex = answerIndexSeed % options.length;
+  const orderedOptions = [];
+  let distractorIndex = 0;
+
+  for (let index = 0; index < options.length; index += 1) {
+    if (index === correctIndex) {
+      orderedOptions.push(correctAnswer);
+    } else {
+      orderedOptions.push(distractors[distractorIndex]);
+      distractorIndex += 1;
+    }
+  }
+
+  return orderedOptions;
+}
+
+function ensureVocabularyChallenge(currentCard) {
+  const challengeKey = `${getActiveVocabularyDeck().id}:${currentCard.id}`;
+
+  if (vocabChallengeKey === challengeKey) {
+    return;
+  }
+
+  vocabChallengeKey = challengeKey;
+  vocabChoiceOptions = getVocabularyChoiceOptions(currentCard);
+  vocabChoiceLocked = false;
+  vocabSelectedOption = null;
+  vocabWasCorrect = null;
+  isCardRevealed = false;
+}
+
+function handleVocabularyChoice(option, currentCard) {
+  if (vocabChoiceLocked) {
+    return;
+  }
+
+  vocabChoiceLocked = true;
+  vocabSelectedOption = option;
+  vocabWasCorrect = option === currentCard.gloss;
+  isCardRevealed = true;
+  renderVocabulary();
+  saveProgress();
 }
 
 function loadProgress() {
@@ -1740,15 +1895,13 @@ function recalculateLevel() {
 }
 
 function getFilteredCards() {
-  const query = state.vocabSearch.toLowerCase();
+  const query = normalizeForSearch(state.vocabSearch);
   const activeCards = getActiveVocabularyCards();
 
   return activeCards.filter((card) => {
     const matchesSearch =
       !query ||
-      card.term.toLowerCase().includes(query) ||
-      card.gloss.toLowerCase().includes(query) ||
-      card.displayTerm.toLowerCase().includes(query);
+      getSearchableCardValues(card).some((value) => value.includes(query));
 
     const isMastered = state.masteredCardIds.includes(card.id);
     const matchesFilter =
@@ -1794,7 +1947,10 @@ function renderVocabulary() {
       "Ajuste a busca ou o filtro para voltar a exibir cartões do vocabulário.";
     refs.vocabPage.textContent = "";
     refs.flashcard.classList.remove("is-revealed");
-    refs.revealCardButton.disabled = true;
+    refs.vocabChoices.innerHTML = "";
+    refs.vocabFeedback.className = "feedback";
+    refs.vocabFeedback.textContent =
+      "Não há cartões disponíveis com o filtro atual.";
     refs.toggleMasteredButton.disabled = true;
     refs.nextCardButton.disabled = true;
     refs.randomCardButton.disabled = true;
@@ -1802,6 +1958,8 @@ function renderVocabulary() {
       '<div class="results-empty">Nenhum cartão corresponde ao filtro atual.</div>';
     return;
   }
+
+  ensureVocabularyChallenge(currentCard);
 
   const currentIndex = filteredCards.findIndex((card) => card.id === currentCard.id);
   const isMastered = state.masteredCardIds.includes(currentCard.id);
@@ -1816,23 +1974,75 @@ function renderVocabulary() {
       : "Frequência não informada no cartão";
   refs.vocabGloss.textContent = isCardRevealed
     ? currentCard.gloss
-    : "Revele o sentido para conferir a glosa deste cartão.";
+    : "Escolha a tradução correta nas quatro opções abaixo para revelar o sentido.";
   refs.vocabPage.textContent = currentCard.pageLabel
     ? currentCard.pageLabel
     : `Página do deck: ${currentCard.page}`;
   refs.flashcard.classList.toggle("is-revealed", isCardRevealed);
-  refs.revealCardButton.disabled = false;
   refs.toggleMasteredButton.disabled = false;
   refs.nextCardButton.disabled = filteredCards.length <= 1;
   refs.randomCardButton.disabled = filteredCards.length <= 1;
-  refs.revealCardButton.textContent = isCardRevealed
-    ? "Ocultar sentido"
-    : "Revelar sentido";
   refs.toggleMasteredButton.textContent = isMastered
     ? "Mover para revisão"
     : "Marcar como dominado";
 
-  const resultCards = getVisibleResultCards(filteredCards, currentIndex);
+  refs.vocabChoices.innerHTML = vocabChoiceOptions
+    .map((option) => {
+      const isCorrect = vocabChoiceLocked && option === currentCard.gloss;
+      const isWrong = vocabChoiceLocked && option === vocabSelectedOption && !vocabWasCorrect;
+      const buttonClass = [
+        "choice-button",
+        "choice-button--vocab",
+        isCorrect ? "is-correct" : "",
+        isWrong ? "is-wrong" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      return `
+        <button class="${buttonClass}" type="button" data-vocab-option="${escapeHtml(option)}" ${
+          vocabChoiceLocked ? "disabled" : ""
+        }>
+          <span class="choice-button__translation">${escapeHtml(option)}</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  refs.vocabChoices
+    .querySelectorAll("[data-vocab-option]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        handleVocabularyChoice(button.dataset.vocabOption, currentCard);
+      })
+    );
+
+  refs.vocabFeedback.className = "feedback";
+
+  if (vocabChoiceLocked) {
+    refs.vocabFeedback.classList.add(
+      vocabWasCorrect ? "feedback--success" : "feedback--error"
+    );
+    refs.vocabFeedback.innerHTML = vocabWasCorrect
+      ? `<strong>Correto.</strong> ${currentCard.term} significa “${currentCard.gloss}”.`
+      : `<strong>Quase.</strong> A glosa principal de ${currentCard.term} é “${currentCard.gloss}”.`;
+  } else {
+    refs.vocabFeedback.textContent =
+      "Marque a tradução correta para virar o card e confirmar o sentido.";
+  }
+
+  renderVocabularyResults(filteredCards, currentCard, currentIndex);
+}
+
+function renderVocabularyResults(filteredCards, currentCard, currentIndex) {
+  if (!state.vocabSearch) {
+    refs.vocabResults.innerHTML =
+      '<div class="results-empty">A lista fica oculta durante o treino para não antecipar respostas. Use a busca para localizar um termo espec\u00edfico em grego ou em portugu\u00eas.</div>';
+    return;
+  }
+
+  const resultCards = filteredCards.slice(0, 18);
+
   refs.vocabResults.innerHTML = resultCards
     .map((card) => {
       const masteredLabel = state.masteredCardIds.includes(card.id)
@@ -1840,12 +2050,17 @@ function renderVocabulary() {
         : "Em revisão";
       const activeClass = card.id === currentCard.id ? " is-active" : "";
       const greekTermClass = shouldUseGreekFont(card.displayTerm) ? " greek-text" : "";
+      const hint = card.pageLabel
+        ? card.pageLabel
+        : card.frequency
+          ? `Frequência no NT: ${card.frequency}`
+          : "Clique para abrir este cartão";
 
       return `
         <button class="result-item${activeClass}" type="button" data-card-id="${card.id}">
           <span class="result-item__meta">${masteredLabel}</span>
           <span class="result-item__term${greekTermClass}">${card.displayTerm}</span>
-          <span class="result-item__gloss">${truncate(card.gloss, 96)}</span>
+          <span class="result-item__hint">${escapeHtml(truncate(hint, 88))}</span>
         </button>
       `;
     })
@@ -1856,30 +2071,11 @@ function renderVocabulary() {
     .forEach((button) =>
       button.addEventListener("click", () => {
         state.currentCardId = button.dataset.cardId;
-        isCardRevealed = false;
+        resetVocabularyChallengeState();
         renderVocabulary();
         saveProgress();
       })
     );
-}
-
-function getVisibleResultCards(filteredCards, currentIndex) {
-  if (!filteredCards.length) {
-    return [];
-  }
-
-  if (state.vocabSearch) {
-    return filteredCards.slice(0, 18);
-  }
-
-  const visible = [];
-  const total = Math.min(filteredCards.length, 18);
-
-  for (let offset = 0; offset < total; offset += 1) {
-    visible.push(filteredCards[(currentIndex + offset) % filteredCards.length]);
-  }
-
-  return visible;
 }
 
 function truncate(value, maxLength) {
