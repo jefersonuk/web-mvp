@@ -19,6 +19,8 @@ O projeto passa a usar como referência principal o livro `Noções do Grego Bí
 - Módulo 1 jogável, baseado nas páginas 11 a 44 do livro
 - Deck completo de vocabulário importado dos cartões em PDF
 - Área de estudo com busca, filtros e marcação de domínio dos cartões
+- Módulo extra de vocabulário para o bloco do aoristo das lições 16 e 17
+- Coleções suplementares de cartões para estudar o aoristo isoladamente
 
 ## Como abrir
 
@@ -52,6 +54,7 @@ Depois, abra `http://localhost:4173`.
 4. Lição 8 | Substantivos: Introdução
 5. Lição 9 | Segunda Declinação
 6. Lição 10 | Primeira Declinação
+7. Módulo extra | Vocabulário do aoristo (lições 16 e 17)
 
 ## Próximos passos sugeridos
 

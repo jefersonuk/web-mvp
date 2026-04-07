@@ -86,6 +86,20 @@ Referência aproximada no livro:
 
 - lição 10
 
+### Módulo Extra
+
+Vocabulário do bloco do aoristo, com foco em:
+
+- lição 16, `Segundo Aoristo do Indicativo`
+- lição 17, `Primeiro Aoristo do Indicativo`
+- formas-chave do 2º aoristo
+- vocabulário novo marcado no apêndice E como `§16` e `§17`
+
+Status atual no app:
+
+- implementado como módulo suplementar
+- disponível também no seletor de coleções do painel de cartões
+
 ## Regra atual de organização
 
 O Módulo 1 agora segue um recorte maior do livro, abrangendo as páginas 11 a 44, e os módulos seguintes retomam a sequência a partir da Lição 6. Isso preserva melhor o bloco introdutório técnico desejado para o início do game.

@@ -14,6 +14,406 @@ const vocabularyCards = Array.isArray(vocabularyBundle.cards)
   ? vocabularyBundle.cards
   : [];
 
+function createStudyCard({
+  id,
+  lesson,
+  term,
+  gloss,
+  frequency = "",
+  meta = "",
+  pageLabel = "",
+  lemma = "",
+  lemmaGloss = "",
+}) {
+  return {
+    id,
+    lesson,
+    term,
+    gloss,
+    frequency,
+    meta,
+    pageLabel,
+    lemma,
+    lemmaGloss,
+    displayTerm: frequency ? `${term} (${frequency})` : term,
+    page: lesson ? `Lição ${lesson}` : "",
+  };
+}
+
+const aoristLesson16Cards = [
+  createStudyCard({
+    id: "aorist16-apethanon",
+    lesson: 16,
+    term: "ἀπέθανον",
+    gloss: "2º aoristo do indicativo ativo de ἀποθνῄσκω: eu morri",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "ἀποθνῄσκω",
+    lemmaGloss: "eu morro",
+  }),
+  createStudyCard({
+    id: "aorist16-ebalon",
+    lesson: 16,
+    term: "ἔβαλον",
+    gloss: "2º aoristo do indicativo ativo de βάλλω: eu lancei / joguei",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "βάλλω",
+    lemmaGloss: "eu lanço",
+  }),
+  createStudyCard({
+    id: "aorist16-egenomen",
+    lesson: 16,
+    term: "ἐγενόμην",
+    gloss: "2º aoristo do indicativo ativo de γίνομαι: eu me tornei / aconteceu",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "γίνομαι",
+    lemmaGloss: "eu me torno / aconteço",
+  }),
+  createStudyCard({
+    id: "aorist16-eidon",
+    lesson: 16,
+    term: "εἶδον, εἶδα",
+    gloss: "2º aoristo do indicativo ativo de ὁράω: eu vi",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "ὁράω",
+    lemmaGloss: "eu vejo",
+  }),
+  createStudyCard({
+    id: "aorist16-eipon",
+    lesson: 16,
+    term: "εἶπον, εἶπα",
+    gloss: "2º aoristo do indicativo ativo de λέγω: eu disse",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "λέγω",
+    lemmaGloss: "eu digo / falo",
+  }),
+  createStudyCard({
+    id: "aorist16-elabon",
+    lesson: 16,
+    term: "ἔλαβον",
+    gloss: "2º aoristo do indicativo ativo de λαμβάνω: eu tomei / recebi",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "λαμβάνω",
+    lemmaGloss: "eu tomo / recebo",
+  }),
+  createStudyCard({
+    id: "aorist16-elipon",
+    lesson: 16,
+    term: "ἔλιπον",
+    gloss: "2º aoristo do indicativo ativo de λείπω: eu deixei / abandonei",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "λείπω",
+    lemmaGloss: "eu deixo / abandono",
+  }),
+  createStudyCard({
+    id: "aorist16-eschon",
+    lesson: 16,
+    term: "ἔσχον",
+    gloss: "2º aoristo do indicativo ativo de ἔχω: eu tive",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "ἔχω",
+    lemmaGloss: "eu tenho",
+  }),
+  createStudyCard({
+    id: "aorist16-heuron",
+    lesson: 16,
+    term: "εὗρον",
+    gloss: "2º aoristo do indicativo ativo de εὑρίσκω: eu achei / encontrei",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "εὑρίσκω",
+    lemmaGloss: "eu acho / encontro",
+  }),
+  createStudyCard({
+    id: "aorist16-ephagon",
+    lesson: 16,
+    term: "ἔφαγον",
+    gloss: "2º aoristo do indicativo ativo de ἐσθίω: eu comi",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "ἐσθίω",
+    lemmaGloss: "eu como",
+  }),
+  createStudyCard({
+    id: "aorist16-elthon",
+    lesson: 16,
+    term: "ἦλθον",
+    gloss: "2º aoristo do indicativo ativo de ἔρχομαι: eu vim / fui",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "ἔρχομαι",
+    lemmaGloss: "eu vou / venho",
+  }),
+  createStudyCard({
+    id: "aorist16-parelabon",
+    lesson: 16,
+    term: "παρέλαβον",
+    gloss: "2º aoristo do indicativo ativo de παραλαμβάνω: eu recebi / tomei comigo",
+    meta: "Lição 16 | Forma do 2º aoristo",
+    pageLabel: "Origem: Apêndice E do livro-base, §16",
+    lemma: "παραλαμβάνω",
+    lemmaGloss: "eu recebo / tomo comigo",
+  }),
+];
+
+const aoristLesson17Cards = [
+  createStudyCard({
+    id: "aorist17-akoloutheo",
+    lesson: 17,
+    term: "ἀκολουθέω",
+    frequency: "90",
+    gloss: "eu sigo, acompanho",
+    meta: "Lição 17 | Frequência no NT: 90",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-basileuo",
+    lesson: 17,
+    term: "βασιλεύω",
+    frequency: "21",
+    gloss: "eu reino; sou ou me torno rei",
+    meta: "Lição 17 | Frequência no NT: 21",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-diakoneo",
+    lesson: 17,
+    term: "διακονέω",
+    frequency: "37",
+    gloss: "eu sirvo; cuido de",
+    meta: "Lição 17 | Frequência no NT: 37",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-dokeo",
+    lesson: 17,
+    term: "δοκέω",
+    frequency: "63",
+    gloss: "eu penso; considero; parece-me",
+    meta: "Lição 17 | Frequência no NT: 63",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-exo",
+    lesson: 17,
+    term: "ἔξω",
+    frequency: "63",
+    gloss: "fora; defora; com genitivo: fora de",
+    meta: "Lição 17 | Frequência no NT: 63",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-eperotao",
+    lesson: 17,
+    term: "ἐπερωτάω",
+    frequency: "56",
+    gloss: "eu pergunto",
+    meta: "Lição 17 | Frequência no NT: 56",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-eulogeo",
+    lesson: 17,
+    term: "εὐλογέω",
+    frequency: "44",
+    gloss: "eu louvo; agradeço; bendigo; abençoo",
+    meta: "Lição 17 | Frequência no NT: 44",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-ede",
+    lesson: 17,
+    term: "ἤδη",
+    frequency: "61",
+    gloss: "já; agora; finalmente",
+    meta: "Lição 17 | Frequência no NT: 61",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-theoreo",
+    lesson: 17,
+    term: "θεωρέω",
+    frequency: "58",
+    gloss: "eu contemplo; vejo",
+    meta: "Lição 17 | Frequência no NT: 58",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-katalyo",
+    lesson: 17,
+    term: "καταλύω",
+    frequency: "17",
+    gloss: "eu destruo; revogo",
+    meta: "Lição 17 | Frequência no NT: 17",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-katoikeo",
+    lesson: 17,
+    term: "κατοικέω",
+    frequency: "44",
+    gloss: "eu habito; moro",
+    meta: "Lição 17 | Frequência no NT: 44",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-krateo",
+    lesson: 17,
+    term: "κρατέω",
+    frequency: "47",
+    gloss: "eu me apodero de; seguro; agarro",
+    meta: "Lição 17 | Frequência no NT: 47",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-nomizo",
+    lesson: 17,
+    term: "νομίζω",
+    frequency: "15",
+    gloss: "eu considero; penso; suponho",
+    meta: "Lição 17 | Frequência no NT: 15",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-oikodomeo",
+    lesson: 17,
+    term: "οἰκοδομέω",
+    frequency: "40",
+    gloss: "eu construo; reconstruo; edifico",
+    meta: "Lição 17 | Frequência no NT: 40",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-hoti",
+    lesson: 17,
+    term: "ὅτι",
+    frequency: "1297",
+    gloss: "que; de modo que; pois; porque; visto que",
+    meta: "Lição 17 | Frequência no NT: 1297",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-parakaleo",
+    lesson: 17,
+    term: "παρακαλέω",
+    frequency: "109",
+    gloss: "eu chamo; exorto; conforto; encorajo; animo",
+    meta: "Lição 17 | Frequência no NT: 109",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-peripateo",
+    lesson: 17,
+    term: "περιπατέω",
+    frequency: "95",
+    gloss: "eu ando; vivo; me comporto",
+    meta: "Lição 17 | Frequência no NT: 95",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-stauroo",
+    lesson: 17,
+    term: "σταυρόω",
+    frequency: "46",
+    gloss: "eu crucifico",
+    meta: "Lição 17 | Frequência no NT: 46",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+  createStudyCard({
+    id: "aorist17-phileo",
+    lesson: 17,
+    term: "φιλέω",
+    frequency: "25",
+    gloss: "eu amo",
+    meta: "Lição 17 | Frequência no NT: 25",
+    pageLabel: "Origem: Apêndice E do livro-base, §17",
+  }),
+];
+
+const vocabularyDecks = [
+  {
+    id: "full",
+    label: "Deck completo",
+    cards: vocabularyCards,
+  },
+  {
+    id: "aorist-16",
+    label: "Lição 16 | 2º aoristo",
+    cards: aoristLesson16Cards,
+  },
+  {
+    id: "aorist-17",
+    label: "Lição 17 | vocabulário",
+    cards: aoristLesson17Cards,
+  },
+  {
+    id: "aorist-16-17",
+    label: "Lições 16-17 | bloco do aoristo",
+    cards: [...aoristLesson16Cards, ...aoristLesson17Cards],
+  },
+];
+
+function buildVocabularyOptions(cards, currentIndex, mapAnswer) {
+  const answer = mapAnswer(cards[currentIndex]);
+  const distractors = [];
+
+  for (let index = 0; index < cards.length; index += 1) {
+    if (index === currentIndex) {
+      continue;
+    }
+
+    const option = mapAnswer(cards[index]);
+    if (!distractors.includes(option) && option !== answer) {
+      distractors.push(option);
+    }
+
+    if (distractors.length === 3) {
+      break;
+    }
+  }
+
+  return [answer, ...distractors];
+}
+
+function buildSecondAoristChallenges(cards) {
+  return cards.map((card, index) => {
+    const answer = `${card.lemma} | ${card.lemmaGloss}`;
+
+    return {
+      type: "gloss",
+      promptLabel: "Qual é o verbo-base desta forma de 2º aoristo?",
+      promptSymbol: card.term,
+      promptHint: "Associe a forma aorística ao presente lexical correspondente.",
+      options: buildVocabularyOptions(
+        cards,
+        index,
+        (optionCard) => `${optionCard.lemma} | ${optionCard.lemmaGloss}`
+      ),
+      answer,
+      insight: `${card.term} remete ao verbo ${card.lemma}, cujo sentido básico é “${card.lemmaGloss}”.`,
+    };
+  });
+}
+
+function buildAoristVocabularyChallenges(cards) {
+  return cards.map((card, index) => ({
+    type: "gloss",
+    promptLabel: "Qual é a glosa principal deste vocábulo do bloco do aoristo?",
+    promptSymbol: card.term,
+    promptHint: "Identifique o significado mais direto usado no módulo suplementar.",
+    options: buildVocabularyOptions(cards, index, (optionCard) => optionCard.gloss),
+    answer: card.gloss,
+    insight: `${card.term} entra no vocabulário da lição ${card.lesson} com a glosa “${card.gloss}”.`,
+  }));
+}
+
 const course = [
   {
     id: "module-1",
@@ -653,6 +1053,48 @@ const course = [
     note: "Em breve: formas nominais em -a e suas leituras.",
     lessons: [],
   },
+  {
+    id: "module-7",
+    order: 7,
+    title: "Módulo Extra | Vocabulário do Aoristo",
+    subtitle: "Lições 16 e 17",
+    description:
+      "Bloco suplementar para memorizar o vocabulário e as formas mais importantes associadas ao aoristo nas lições 16 e 17.",
+    unlockThreshold: 0,
+    note: "Suplementar: este módulo pode ser aberto a qualquer momento e também aparece no seletor de cartões.",
+    lessons: [
+      {
+        id: "module-7-aorist-second",
+        title: "Lição 16 | Formas-chave do 2º aoristo",
+        objective:
+          "Reconhecer as formas frequentes do 2º aoristo e ligá-las ao verbo lexical que está por trás delas.",
+        explanation:
+          "A lição 16 introduz o 2º aoristo e exige memorização ativa de formas muito frequentes do Novo Testamento. Aqui, o foco é associar a forma aorística ao verbo-base.",
+        keyPoints: [
+          "O 2º aoristo costuma usar radical diferente do presente lexical.",
+          "A melhor fixação vem da associação entre forma irregular, verbo-base e sentido principal.",
+          "As formas deste módulo foram extraídas do apêndice E do livro-base, marcadas em §16.",
+        ],
+        xpReward: 70,
+        challenges: buildSecondAoristChallenges(aoristLesson16Cards),
+      },
+      {
+        id: "module-7-aorist-first-vocab",
+        title: "Lição 17 | Vocabulário do bloco do aoristo",
+        objective:
+          "Fixar o vocabulário novo que acompanha a lição 17 e reforça o bloco de ensino do aoristo.",
+        explanation:
+          "A lição 17 expande o estudo do aoristo e acrescenta vocabulário importante para leitura contínua do NT. Este módulo suplementar trabalha exatamente as entradas marcadas no apêndice como §17.",
+        keyPoints: [
+          "O vocabulário da lição 17 mistura verbos, partículas, advérbios e conectivos muito frequentes.",
+          "A memorização deste bloco ajuda a leitura das formas do aoristo em contexto real.",
+          "A mesma coleção está disponível no painel de cartões, isolada das demais entradas do curso.",
+        ],
+        xpReward: 90,
+        challenges: buildAoristVocabularyChallenges(aoristLesson17Cards),
+      },
+    ],
+  },
 ];
 
 const STORAGE_KEY = "grego-game-progress-v3";
@@ -662,12 +1104,17 @@ const defaultProgress = {
   xp: 0,
   answered: 0,
   correct: 0,
-  unlockedLessons: ["module-1-alpha"],
+  unlockedLessons: [
+    "module-1-alpha",
+    "module-7-aorist-second",
+    "module-7-aorist-first-vocab",
+  ],
   completedLessons: [],
   currentLessonId: "module-1-alpha",
   lessonChallengeIndex: 0,
   masteredCardIds: [],
   currentCardId: vocabularyCards[0]?.id || null,
+  vocabDeckId: "full",
   vocabSearch: "",
   vocabFilter: "all",
 };
@@ -693,6 +1140,7 @@ const refs = {
   nextButton: document.querySelector("#next-button"),
   resumeButton: document.querySelector("#resume-button"),
   resetButton: document.querySelector("#reset-button"),
+  vocabDeckSelect: document.querySelector("#vocab-deck-select"),
   vocabSearch: document.querySelector("#vocab-search"),
   filterChips: Array.from(document.querySelectorAll(".filter-chip")),
   flashcard: document.querySelector("#flashcard"),
@@ -736,6 +1184,15 @@ refs.resetButton.addEventListener("click", () => {
   isCardRevealed = false;
   saveProgress();
   render();
+});
+
+refs.vocabDeckSelect.addEventListener("change", (event) => {
+  state.vocabDeckId = event.target.value || "full";
+  state.currentCardId = getActiveVocabularyCards()[0]?.id || null;
+  isCardRevealed = false;
+  renderStats();
+  renderVocabulary();
+  saveProgress();
 });
 
 refs.vocabSearch.addEventListener("input", (event) => {
@@ -825,6 +1282,82 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function createSeedFromString(value) {
+  let hash = 0;
+
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash << 5) - hash + value.charCodeAt(index);
+    hash |= 0;
+  }
+
+  return Math.abs(hash) || 1;
+}
+
+function createSeededRandom(seedValue) {
+  let seed = seedValue >>> 0;
+
+  return () => {
+    seed += 0x6d2b79f5;
+    let t = seed;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function getOrderedOptions(challenge, lesson, challengeIndex) {
+  const options = [...challenge.options];
+  const wrongOptions = options.filter((option) => option !== challenge.answer);
+  const correctIndexSeed = createSeedFromString(
+    `${lesson.id}:${challengeIndex}:${challenge.answer}`
+  );
+  const wrongOptionsSeed = createSeedFromString(
+    `${lesson.id}:${challengeIndex}:${challenge.promptLabel}:wrongs`
+  );
+  const random = createSeededRandom(wrongOptionsSeed);
+  const shuffledWrongOptions = [...wrongOptions];
+
+  for (let index = shuffledWrongOptions.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [shuffledWrongOptions[index], shuffledWrongOptions[swapIndex]] = [
+      shuffledWrongOptions[swapIndex],
+      shuffledWrongOptions[index],
+    ];
+  }
+
+  const correctIndex = correctIndexSeed % options.length;
+  const orderedOptions = [];
+  let wrongOptionIndex = 0;
+
+  for (let index = 0; index < options.length; index += 1) {
+    if (index === correctIndex) {
+      orderedOptions.push(challenge.answer);
+    } else {
+      orderedOptions.push(shuffledWrongOptions[wrongOptionIndex]);
+      wrongOptionIndex += 1;
+    }
+  }
+
+  return orderedOptions;
+}
+
+function shouldUseGreekFont(value) {
+  const text = String(value || "");
+  return /[\u0370-\u03ff\u1f00-\u1fff]/u.test(text) || /[()/=+|\\ö]/u.test(text);
+}
+
+function getVocabularyDeckById(deckId) {
+  return vocabularyDecks.find((deck) => deck.id === deckId) || vocabularyDecks[0];
+}
+
+function getActiveVocabularyDeck() {
+  return getVocabularyDeckById(state?.vocabDeckId || "full");
+}
+
+function getActiveVocabularyCards() {
+  return getActiveVocabularyDeck().cards;
+}
+
 function loadProgress() {
   const saved = window.localStorage.getItem(STORAGE_KEY);
 
@@ -834,18 +1367,24 @@ function loadProgress() {
 
   try {
     const parsed = JSON.parse(saved);
+    const mergedUnlockedLessons = Array.from(
+      new Set([
+        ...clone(defaultProgress.unlockedLessons),
+        ...(Array.isArray(parsed.unlockedLessons) ? parsed.unlockedLessons : []),
+      ])
+    );
+
     return {
       ...clone(defaultProgress),
       ...parsed,
-      unlockedLessons: Array.isArray(parsed.unlockedLessons)
-        ? parsed.unlockedLessons
-        : clone(defaultProgress.unlockedLessons),
+      unlockedLessons: mergedUnlockedLessons,
       completedLessons: Array.isArray(parsed.completedLessons)
         ? parsed.completedLessons
         : [],
       masteredCardIds: Array.isArray(parsed.masteredCardIds)
         ? parsed.masteredCardIds
         : [],
+      vocabDeckId: getVocabularyDeckById(parsed.vocabDeckId || "full").id,
     };
   } catch (error) {
     return clone(defaultProgress);
@@ -913,14 +1452,18 @@ function renderStats() {
   const accuracy = state.answered
     ? Math.round((state.correct / state.answered) * 100)
     : 0;
-  const masteredCards = state.masteredCardIds.length;
+  const activeDeck = getActiveVocabularyDeck();
+  const activeDeckCards = activeDeck.cards;
+  const masteredCards = activeDeckCards.filter((card) =>
+    state.masteredCardIds.includes(card.id)
+  ).length;
 
   refs.currentLevel.textContent = state.level;
   refs.currentRank.textContent = getRankLabel(state.level);
   refs.xpTotal.textContent = state.xp;
   refs.accuracyRate.textContent = `${accuracy}%`;
   refs.cardsMastered.textContent = masteredCards;
-  refs.cardsMasteredMeta.textContent = `${masteredCards} de ${vocabularyCards.length} cartões`;
+  refs.cardsMasteredMeta.textContent = `${masteredCards} de ${activeDeckCards.length} cartões em ${activeDeck.label}`;
 }
 
 function renderModules() {
@@ -944,16 +1487,19 @@ function renderModules() {
             : "Bloqueado";
       const statusClass =
         isActive || (isUnlocked && !emptyUnlocked) ? "" : " status-pill--locked";
+      const isInteractive = isUnlocked && module.lessons.length > 0;
       const cardClass = isActive
         ? "module-card module-card--active"
         : `module-card${isUnlocked ? "" : " module-card--locked"}`;
+      const interactiveClass = isInteractive ? " module-card--interactive" : "";
+      const dataAttribute = isInteractive ? ` data-module-id="${module.id}"` : "";
 
       const progressText = module.lessons.length
         ? `${completedLessonsInModule}/${module.lessons.length} missões concluídas`
         : "Conteúdo em preparação";
 
       return `
-        <article class="${cardClass}">
+        <article class="${cardClass}${interactiveClass}"${dataAttribute}>
           <div class="module-card__top">
             <div>
               <p class="eyebrow">Módulo ${module.order}</p>
@@ -969,11 +1515,42 @@ function renderModules() {
       `;
     })
     .join("");
+
+  refs.modulePath.querySelectorAll("[data-module-id]").forEach((card) => {
+    card.addEventListener("click", () => {
+      openModule(card.dataset.moduleId);
+    });
+  });
+}
+
+function openModule(moduleId) {
+  const module = course.find((courseModule) => courseModule.id === moduleId);
+
+  if (!module || !module.lessons.length) {
+    return;
+  }
+
+  const firstLesson = module.lessons[0];
+
+  if (!state.unlockedLessons.includes(firstLesson.id)) {
+    state.unlockedLessons = [...state.unlockedLessons, firstLesson.id];
+  }
+
+  state.currentLessonId = firstLesson.id;
+  state.lessonChallengeIndex = 0;
+  render();
+  saveProgress();
+  refs.lessonTitle.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function renderLesson() {
   const lesson = getCurrentLesson();
   const challenge = lesson.challenges[state.lessonChallengeIndex];
+  const orderedOptions = getOrderedOptions(
+    challenge,
+    lesson,
+    state.lessonChallengeIndex
+  );
   const isCourseFinished =
     state.completedLessons.length === getAllLessons().length &&
     state.completedLessons.includes(lesson.id);
@@ -987,10 +1564,10 @@ function renderLesson() {
   refs.lessonExplanation.textContent = lesson.explanation;
   refs.challengeCounter.textContent = `Questão ${state.lessonChallengeIndex + 1}`;
   refs.nextButton.disabled = true;
-  refs.nextButton.textContent = isCourseFinished ? "Módulo concluído" : "Próximo desafio";
+  refs.nextButton.textContent = isCourseFinished ? "Percurso concluído" : "Próximo desafio";
   refs.feedback.className = "feedback";
   refs.feedback.textContent = isCourseFinished
-    ? "Módulo 1 concluído. Você pode revisar as missões e continuar fortalecendo o vocabulário nos cartões."
+    ? "O percurso implementado até agora foi concluído. Você pode revisar as missões e continuar estudando pelos cartões."
     : "Escolha uma opção para receber correção e uma explicação curta.";
   interactionLocked = false;
 
@@ -1004,17 +1581,22 @@ function renderLesson() {
       : challenge.type === "gloss" || challenge.type === "transliteration"
         ? "prompt-panel__word"
         : "prompt-panel__symbol";
+  const promptGreekClass = shouldUseGreekFont(challenge.promptSymbol)
+    ? " greek-text"
+    : "";
 
   refs.promptPanel.innerHTML = `
     <p class="prompt-panel__label">${challenge.promptLabel}</p>
-    <p class="${promptClass}">${challenge.promptSymbol}</p>
+    <p class="${promptClass}${promptGreekClass}">${challenge.promptSymbol}</p>
     <p class="prompt-panel__hint">${challenge.promptHint}</p>
   `;
 
   refs.choices.innerHTML = "";
-  challenge.options.forEach((option) => {
+  orderedOptions.forEach((option) => {
     const button = document.createElement("button");
-    button.className = "choice-button";
+    button.className = shouldUseGreekFont(option)
+      ? "choice-button greek-text"
+      : "choice-button";
     button.type = "button";
     button.textContent = option;
     button.addEventListener("click", () => handleAnswer(option, challenge, lesson));
@@ -1056,8 +1638,9 @@ function handleAnswer(option, challenge, lesson) {
     refs.feedback.classList.add("feedback--success");
     refs.feedback.innerHTML = `<strong>Correto.</strong> ${challenge.insight}`;
   } else {
+    const answerClass = shouldUseGreekFont(challenge.answer) ? " class=\"greek-text\"" : "";
     refs.feedback.classList.add("feedback--error");
-    refs.feedback.innerHTML = `<strong>Quase.</strong> A resposta correta é <strong>${challenge.answer}</strong>. ${challenge.insight}`;
+    refs.feedback.innerHTML = `<strong>Quase.</strong> A resposta correta é <strong${answerClass}>${challenge.answer}</strong>. ${challenge.insight}`;
   }
 
   refs.nextButton.disabled = false;
@@ -1112,8 +1695,9 @@ function recalculateLevel() {
 
 function getFilteredCards() {
   const query = state.vocabSearch.toLowerCase();
+  const activeCards = getActiveVocabularyCards();
 
-  return vocabularyCards.filter((card) => {
+  return activeCards.filter((card) => {
     const matchesSearch =
       !query ||
       card.term.toLowerCase().includes(query) ||
@@ -1139,6 +1723,12 @@ function getCurrentCard(filteredCards) {
 }
 
 function renderVocabulary() {
+  refs.vocabDeckSelect.innerHTML = vocabularyDecks
+    .map(
+      (deck) => `<option value="${deck.id}">${deck.label}</option>`
+    )
+    .join("");
+  refs.vocabDeckSelect.value = getActiveVocabularyDeck().id;
   refs.vocabSearch.value = state.vocabSearch;
   refs.filterChips.forEach((chip) => {
     chip.classList.toggle("is-active", chip.dataset.filter === state.vocabFilter);
@@ -1151,6 +1741,7 @@ function renderVocabulary() {
 
   if (!currentCard) {
     refs.vocabTerm.textContent = "Nenhum cartão nesta busca";
+    refs.vocabTerm.classList.remove("greek-text");
     refs.vocabPosition.textContent = "0 de 0";
     refs.vocabFrequency.textContent = "";
     refs.vocabGloss.textContent =
@@ -1170,14 +1761,19 @@ function renderVocabulary() {
   const isMastered = state.masteredCardIds.includes(currentCard.id);
 
   refs.vocabTerm.textContent = currentCard.term;
+  refs.vocabTerm.classList.toggle("greek-text", shouldUseGreekFont(currentCard.term));
   refs.vocabPosition.textContent = `${currentIndex + 1} de ${filteredCards.length}`;
-  refs.vocabFrequency.textContent = currentCard.frequency
-    ? `Frequência no NT: ${currentCard.frequency}`
-    : "Frequência não informada no cartão";
+  refs.vocabFrequency.textContent = currentCard.meta
+    ? currentCard.meta
+    : currentCard.frequency
+      ? `Frequência no NT: ${currentCard.frequency}`
+      : "Frequência não informada no cartão";
   refs.vocabGloss.textContent = isCardRevealed
     ? currentCard.gloss
     : "Revele o sentido para conferir a glosa deste cartão.";
-  refs.vocabPage.textContent = `Página do deck: ${currentCard.page}`;
+  refs.vocabPage.textContent = currentCard.pageLabel
+    ? currentCard.pageLabel
+    : `Página do deck: ${currentCard.page}`;
   refs.flashcard.classList.toggle("is-revealed", isCardRevealed);
   refs.revealCardButton.disabled = false;
   refs.toggleMasteredButton.disabled = false;
@@ -1197,11 +1793,12 @@ function renderVocabulary() {
         ? "Dominado"
         : "Em revisão";
       const activeClass = card.id === currentCard.id ? " is-active" : "";
+      const greekTermClass = shouldUseGreekFont(card.displayTerm) ? " greek-text" : "";
 
       return `
         <button class="result-item${activeClass}" type="button" data-card-id="${card.id}">
           <span class="result-item__meta">${masteredLabel}</span>
-          <span class="result-item__term">${card.displayTerm}</span>
+          <span class="result-item__term${greekTermClass}">${card.displayTerm}</span>
           <span class="result-item__gloss">${truncate(card.gloss, 96)}</span>
         </button>
       `;
