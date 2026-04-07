@@ -59,7 +59,15 @@ Depois, abra `http://localhost:4173`.
 - Adicionar exercícios de parsing morfológico
 - Criar leitura guiada de versos reais do Novo Testamento
 - Incluir sistema de revisão espaçada
-- Preparar deploy em GitHub Pages
+- Refinar a versão de teste publicada no GitHub Pages
+
+## Deploy de teste
+
+O repositório já está preparado para publicar a branch `codex/web-mvp` no GitHub Pages por meio de GitHub Actions.
+
+URL esperada do teste:
+
+- `https://jefersonuk.github.io/web-mvp/`
 
 ## Regenerar o deck de vocabulário
 
