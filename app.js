@@ -2216,7 +2216,7 @@ const course = [
     subtitle: "Ativo, médio e passivo",
     description:
       "Bloco jogável sobre formação, flexão e usos do presente do subjuntivo, com foco em leitura contextual e não só em tabela.",
-    unlockThreshold: 6,
+    unlockThreshold: 0,
     note: "Implementado: vogal temática alongada, subjuntivo de εἰμί, ἵνα + subjuntivo e usos especiais.",
     lessons: module2Lessons,
   },
@@ -2227,7 +2227,7 @@ const course = [
     subtitle: "Ativo e médio",
     description:
       "Módulo dedicado ao sigma temporal, às contrações do futuro e à leitura de formas regulares e irregulares.",
-    unlockThreshold: 8,
+    unlockThreshold: 0,
     note: "Implementado: futuro ativo e médio, verbos contraídos, radicais líquidos, futuro de εἰμί e μέλλω + infinitivo.",
     lessons: module3Lessons,
   },
@@ -2238,7 +2238,7 @@ const course = [
     subtitle: "Entrada no sistema nominal",
     description:
       "Entrada estruturada no sistema nominal: casos, artigo, número, gênero e a lógica das funções sintáticas.",
-    unlockThreshold: 10,
+    unlockThreshold: 0,
     note: "Implementado: mapa dos casos, agrupamento funcional em oito casos e o artigo como bússola morfológica.",
     lessons: module4Lessons,
   },
@@ -2249,7 +2249,7 @@ const course = [
     subtitle: "Temas em -o",
     description:
       "Primeiro grande laboratório de declinação do app, com paradigmas vivos, leitura de casos e puzzles morfológicos.",
-    unlockThreshold: 12,
+    unlockThreshold: 0,
     note: "Implementado: masculinos, femininos e neutros da 2a declinação, com puzzles de forma, caso, número e função.",
     lessons: module5Lessons,
   },
@@ -2260,7 +2260,7 @@ const course = [
     subtitle: "Temas em -a",
     description:
       "Segundo grande laboratório nominal do curso, agora com grupos em -α, -η e masculinos da 1a declinação.",
-    unlockThreshold: 15,
+    unlockThreshold: 0,
     note: "Implementado: grupos femininos, masculinos em -ας/-ης e puzzles didáticos de contraste morfológico.",
     lessons: module6Lessons,
   },
@@ -2308,6 +2308,10 @@ const course = [
   },
 ];
 
+const ALL_LESSON_IDS = course.flatMap((module) =>
+  module.lessons.map((lesson) => lesson.id)
+);
+
 const STORAGE_KEY = "grego-game-progress-v3";
 
 const defaultProgress = {
@@ -2315,11 +2319,7 @@ const defaultProgress = {
   xp: 0,
   answered: 0,
   correct: 0,
-  unlockedLessons: [
-    "module-1-alpha",
-    "module-7-aorist-second",
-    "module-7-aorist-first-vocab",
-  ],
+  unlockedLessons: ALL_LESSON_IDS,
   completedLessons: [],
   currentLessonId: "module-1-alpha",
   lessonChallengeIndex: 0,
