@@ -536,6 +536,12 @@ h3 {
   align-items: baseline;
 }
 
+.feedback-coach {
+  display: block;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
 .vocab-section {
   padding: 28px;
   border-radius: 28px;

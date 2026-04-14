@@ -54,6 +54,12 @@ Referência aproximada no livro:
 
 - lição 6
 
+Status atual no app:
+
+- implementado
+- inclui oficina de formação do subjuntivo
+- inclui usos especiais com ἵνα, μή, οὐ μή e perguntas deliberativas
+
 ### Módulo 3
 
 Lição 7, `Futuro do Indicativo`.
@@ -61,6 +67,11 @@ Lição 7, `Futuro do Indicativo`.
 Referência aproximada no livro:
 
 - lição 7
+
+Status atual no app:
+
+- implementado
+- inclui sigma temporal, contrações, radicais líquidos e futuro de εἰμί
 
 ### Módulo 4
 
@@ -70,6 +81,11 @@ Referência aproximada no livro:
 
 - lição 8
 
+Status atual no app:
+
+- implementado
+- inclui mapa dos casos, artigo grego e agrupamento funcional dos casos
+
 ### Módulo 5
 
 Lição 9, `Segunda Declinação`.
@@ -78,6 +94,12 @@ Referência aproximada no livro:
 
 - lição 9
 
+Status atual no app:
+
+- implementado
+- inclui paradigmas masculinos, femininos e neutros
+- inclui puzzles de declinação com foco em caso, número, gênero e função sintática
+
 ### Módulo 6
 
 Lição 10, `Primeira Declinação`.
@@ -85,6 +107,12 @@ Lição 10, `Primeira Declinação`.
 Referência aproximada no livro:
 
 - lição 10
+
+Status atual no app:
+
+- implementado
+- inclui grupos em -α, -η e masculinos em -ας/-ης
+- inclui puzzles de contraste morfológico e correções didáticas
 
 ### Módulo Extra
 
@@ -103,6 +131,8 @@ Status atual no app:
 ## Regra atual de organização
 
 O Módulo 1 agora segue um recorte maior do livro, abrangendo as páginas 11 a 44, e os módulos seguintes retomam a sequência a partir da Lição 6. Isso preserva melhor o bloco introdutório técnico desejado para o início do game.
+
+Nos módulos nominais, o app agora incorpora puzzles de declinação porque o próprio livro insiste na memorização ativa de flexões, artigos e terminações como parte central da aprendizagem do grego bíblico.
 
 ## Regra de uso do livro no projeto
 

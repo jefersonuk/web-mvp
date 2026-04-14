@@ -17,10 +17,12 @@ O projeto passa a usar como referência principal o livro `Noções do Grego Bí
 - Progresso salvo em `localStorage`
 - Trilha pedagógica reorganizada para seguir as lições do livro
 - Módulo 1 jogável, baseado nas páginas 11 a 44 do livro
+- Módulos 2 a 6 jogáveis, cobrindo lições 6 a 10 do livro-base
 - Deck completo de vocabulário importado dos cartões em PDF
 - Área de estudo com busca, filtros e marcação de domínio dos cartões
 - Módulo extra de vocabulário para o bloco do aoristo das lições 16 e 17
 - Coleções suplementares de cartões para estudar o aoristo isoladamente
+- Puzzles de declinação para a 2a e a 1a declinações, com correções didáticas
 
 ## Como abrir
 
@@ -58,7 +60,7 @@ Depois, abra `http://localhost:4173`.
 
 ## Próximos passos sugeridos
 
-- Alimentar os próximos módulos diretamente a partir das próximas lições do livro
+- Refinar os módulos nominais com mais puzzles de parsing e completamento de paradigma
 - Adicionar exercícios de parsing morfológico
 - Criar leitura guiada de versos reais do Novo Testamento
 - Incluir sistema de revisão espaçada
