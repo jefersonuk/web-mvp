@@ -230,6 +230,32 @@ h3 {
   margin-top: 20px;
 }
 
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mode-tab {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.mode-tab--active {
+  background: rgba(35, 92, 91, 0.14);
+  border-color: rgba(35, 92, 91, 0.36);
+  color: var(--teal);
+}
+
+.pane-content--hidden {
+  display: none;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -542,6 +568,171 @@ h3 {
   font-weight: 700;
 }
 
+.declension-section {
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 253, 247, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow);
+}
+
+.declension-toolbar {
+  display: grid;
+  grid-template-columns: 1.1fr 0.85fr 0.95fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.declension-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+}
+
+.declension-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+}
+
+.declension-board,
+.declension-trainer {
+  padding: 24px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(245, 237, 221, 0.82));
+  border: 1px solid var(--line);
+}
+
+.declension-board__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.declension-table-wrap {
+  overflow: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(67, 85, 133, 0.25);
+}
+
+.declension-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.declension-table th,
+.declension-table td {
+  border-right: 1px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 11px 10px;
+  text-align: center;
+}
+
+.declension-table thead tr:first-child th {
+  background: #4f67aa;
+  color: #f3f6ff;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.declension-table thead tr:last-child th {
+  background: #d9dfef;
+  color: #2b3557;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.declension-table tbody th {
+  background: #e8edf9;
+  color: #2b3557;
+  font-weight: 800;
+  min-width: 104px;
+}
+
+.declension-table tbody td {
+  background: #f4f7ff;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.declension-table tbody td.greek-text {
+  color: #176daa;
+  font-size: 1.24rem;
+  font-weight: 700;
+}
+
+.declension-table tbody td.declension-empty {
+  color: #7f8aa8;
+  font-weight: 600;
+}
+
+.declension-case-guide {
+  margin-top: 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.declension-case-guide__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: baseline;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ink-soft);
+}
+
+.declension-case-guide__tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 9px;
+  background: rgba(35, 92, 91, 0.12);
+  color: var(--teal);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.intensive-section {
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 253, 247, 0.82);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: var(--shadow);
+}
+
+.intensive-toolbar {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.intensive-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: end;
+}
+
+.intensive-card {
+  margin-top: 4px;
+}
+
 .vocab-section {
   padding: 28px;
   border-radius: 28px;
@@ -755,6 +946,9 @@ h3 {
 @media (max-width: 980px) {
   .hero,
   .workspace,
+  .declension-grid,
+  .declension-toolbar,
+  .intensive-toolbar,
   .vocab-grid,
   .vocab-toolbar,
   .stats,
@@ -774,6 +968,9 @@ h3 {
   .hero__panel,
   .path-card,
   .lesson-card,
+  .declension-section,
+  .intensive-section,
+  .vocab-section,
   .note-card,
   .stat-card {
     padding: 20px;

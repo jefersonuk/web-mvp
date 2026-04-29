@@ -1625,6 +1625,916 @@ const module6Lessons = [
   },
 ];
 
+const DECLENSION_CASES = [
+  {
+    id: "nom",
+    abbr: "Nom.",
+    label: "Nominativo",
+    functionHint: "Normalmente marca sujeito ou predicativo do sujeito.",
+  },
+  {
+    id: "gen",
+    abbr: "Gen.",
+    label: "Genitivo",
+    functionHint: "Costuma marcar posse, especificação ou qualificação.",
+  },
+  {
+    id: "abl",
+    abbr: "Abl.",
+    label: "Ablativo",
+    functionHint: "Costuma marcar origem, procedência ou separação.",
+  },
+  {
+    id: "loc",
+    abbr: "Loc.",
+    label: "Locativo",
+    functionHint: "Costuma marcar localização: onde algo ocorre.",
+  },
+  {
+    id: "ins",
+    abbr: "Ins.",
+    label: "Instrumental",
+    functionHint: "Costuma marcar meio, instrumento ou associação.",
+  },
+  {
+    id: "dat",
+    abbr: "Dat.",
+    label: "Dativo",
+    functionHint: "Costuma marcar interesse pessoal: a/para quem.",
+  },
+  {
+    id: "ac",
+    abbr: "Ac.",
+    label: "Acusativo",
+    functionHint: "Costuma marcar objeto direto ou alvo da ação.",
+  },
+  {
+    id: "voc",
+    abbr: "Voc.",
+    label: "Vocativo",
+    functionHint: "Marca invocação ou chamado direto.",
+  },
+];
+
+const DECLENSION_GENDERS = [
+  { id: "masc", label: "Masculino", short: "Masc." },
+  { id: "fem", label: "Feminino", short: "Fem." },
+  { id: "neut", label: "Neutro", short: "Neutro" },
+];
+
+const DECLENSION_NUMBERS = [
+  { id: "singular", label: "Singular" },
+  { id: "plural", label: "Plural" },
+];
+
+function createDeclensionRow(
+  caseId,
+  singularMasc,
+  singularFem,
+  singularNeut,
+  pluralMasc,
+  pluralFem,
+  pluralNeut
+) {
+  return {
+    caseId,
+    singular: {
+      masc: singularMasc,
+      fem: singularFem,
+      neut: singularNeut,
+    },
+    plural: {
+      masc: pluralMasc,
+      fem: pluralFem,
+      neut: pluralNeut,
+    },
+  };
+}
+
+const declensionCharts = [
+  {
+    id: "article",
+    label: "Artigo grego (ὁ, ἡ, τό)",
+    note: "Quadro do artigo definido com os oito casos funcionais.",
+    rows: [
+      createDeclensionRow("nom", "ὁ", "ἡ", "τό", "οἱ", "αἱ", "τά"),
+      createDeclensionRow("gen", "τοῦ", "τῆς", "τοῦ", "τῶν", "τῶν", "τῶν"),
+      createDeclensionRow("abl", "τοῦ", "τῆς", "τοῦ", "τῶν", "τῶν", "τῶν"),
+      createDeclensionRow("loc", "τῷ", "τῇ", "τῷ", "τοῖς", "ταῖς", "τοῖς"),
+      createDeclensionRow("ins", "τῷ", "τῇ", "τῷ", "τοῖς", "ταῖς", "τοῖς"),
+      createDeclensionRow("dat", "τῷ", "τῇ", "τῷ", "τοῖς", "ταῖς", "τοῖς"),
+      createDeclensionRow("ac", "τόν", "τήν", "τό", "τούς", "τάς", "τά"),
+      createDeclensionRow("voc", null, null, null, null, null, null),
+    ],
+  },
+  {
+    id: "second-declension",
+    label: "2ª Declinação (λόγος, ὁδός, ἔργον)",
+    note: "Paradigma comparado: masc., fem. e neutro em temas de 2ª declinação.",
+    rows: [
+      createDeclensionRow("nom", "λόγος", "ὁδός", "ἔργον", "λόγοι", "ὁδοί", "ἔργα"),
+      createDeclensionRow("gen", "λόγου", "ὁδοῦ", "ἔργου", "λόγων", "ὁδῶν", "ἔργων"),
+      createDeclensionRow("abl", "λόγου", "ὁδοῦ", "ἔργου", "λόγων", "ὁδῶν", "ἔργων"),
+      createDeclensionRow("loc", "λόγῳ", "ὁδῷ", "ἔργῳ", "λόγοις", "ὁδοῖς", "ἔργοις"),
+      createDeclensionRow("ins", "λόγῳ", "ὁδῷ", "ἔργῳ", "λόγοις", "ὁδοῖς", "ἔργοις"),
+      createDeclensionRow("dat", "λόγῳ", "ὁδῷ", "ἔργῳ", "λόγοις", "ὁδοῖς", "ἔργοις"),
+      createDeclensionRow("ac", "λόγον", "ὁδόν", "ἔργον", "λόγους", "ὁδούς", "ἔργα"),
+      createDeclensionRow("voc", "λόγε", "ὁδέ", "ἔργον", "λόγοι", "ὁδοί", "ἔργα"),
+    ],
+  },
+  {
+    id: "first-declension-alpha-kept",
+    label: "1ª Declinação Fem. (σοφία)",
+    note: "Grupo em -α precedido por ε, ι ou ρ: o alfa tende a permanecer no singular.",
+    rows: [
+      createDeclensionRow("nom", null, "σοφία", null, null, "σοφίαι", null),
+      createDeclensionRow("gen", null, "σοφίας", null, null, "σοφιῶν", null),
+      createDeclensionRow("abl", null, "σοφίας", null, null, "σοφιῶν", null),
+      createDeclensionRow("loc", null, "σοφίᾳ", null, null, "σοφίαις", null),
+      createDeclensionRow("ins", null, "σοφίᾳ", null, null, "σοφίαις", null),
+      createDeclensionRow("dat", null, "σοφίᾳ", null, null, "σοφίαις", null),
+      createDeclensionRow("ac", null, "σοφίαν", null, null, "σοφίας", null),
+      createDeclensionRow("voc", null, "σοφία", null, null, "σοφίαι", null),
+    ],
+  },
+  {
+    id: "first-declension-alpha-shift",
+    label: "1ª Declinação Fem. (γλῶσσα)",
+    note: "Grupo em -α sem ε/ι/ρ antes do alfa: no singular, α passa para η em formas centrais.",
+    rows: [
+      createDeclensionRow("nom", null, "γλῶσσα", null, null, "γλῶσσαι", null),
+      createDeclensionRow("gen", null, "γλώσσης", null, null, "γλωσσῶν", null),
+      createDeclensionRow("abl", null, "γλώσσης", null, null, "γλωσσῶν", null),
+      createDeclensionRow("loc", null, "γλώσσῃ", null, null, "γλώσσαις", null),
+      createDeclensionRow("ins", null, "γλώσσῃ", null, null, "γλώσσαις", null),
+      createDeclensionRow("dat", null, "γλώσσῃ", null, null, "γλώσσαις", null),
+      createDeclensionRow("ac", null, "γλῶσσαν", null, null, "γλώσσας", null),
+      createDeclensionRow("voc", null, "γλῶσσα", null, null, "γλῶσσαι", null),
+    ],
+  },
+  {
+    id: "first-declension-eta",
+    label: "1ª Declinação Fem. (ἀγάπη)",
+    note: "Grupo em -η: o eta permanece ao longo do singular.",
+    rows: [
+      createDeclensionRow("nom", null, "ἀγάπη", null, null, "ἀγάπαι", null),
+      createDeclensionRow("gen", null, "ἀγάπης", null, null, "ἀγαπῶν", null),
+      createDeclensionRow("abl", null, "ἀγάπης", null, null, "ἀγαπῶν", null),
+      createDeclensionRow("loc", null, "ἀγάπῃ", null, null, "ἀγάπαις", null),
+      createDeclensionRow("ins", null, "ἀγάπῃ", null, null, "ἀγάπαις", null),
+      createDeclensionRow("dat", null, "ἀγάπῃ", null, null, "ἀγάπαις", null),
+      createDeclensionRow("ac", null, "ἀγάπην", null, null, "ἀγάπας", null),
+      createDeclensionRow("voc", null, "ἀγάπη", null, null, "ἀγάπαι", null),
+    ],
+  },
+  {
+    id: "first-declension-masc-as",
+    label: "1ª Declinação Masc. (νεανίας)",
+    note: "Masculinos em -ας: artigo masculino e genitivo singular em -ου.",
+    rows: [
+      createDeclensionRow("nom", "νεανίας", null, null, "νεανίαι", null, null),
+      createDeclensionRow("gen", "νεανίου", null, null, "νεανιῶν", null, null),
+      createDeclensionRow("abl", "νεανίου", null, null, "νεανιῶν", null, null),
+      createDeclensionRow("loc", "νεανίᾳ", null, null, "νεανίαις", null, null),
+      createDeclensionRow("ins", "νεανίᾳ", null, null, "νεανίαις", null, null),
+      createDeclensionRow("dat", "νεανίᾳ", null, null, "νεανίαις", null, null),
+      createDeclensionRow("ac", "νεανίαν", null, null, "νεανίας", null, null),
+      createDeclensionRow("voc", "νεανία", null, null, "νεανίαι", null, null),
+    ],
+  },
+  {
+    id: "first-declension-masc-es",
+    label: "1ª Declinação Masc. (προφήτης)",
+    note: "Masculinos em -ης: artigo masculino e vocativo singular próprio.",
+    rows: [
+      createDeclensionRow("nom", "προφήτης", null, null, "προφῆται", null, null),
+      createDeclensionRow("gen", "προφήτου", null, null, "προφητῶν", null, null),
+      createDeclensionRow("abl", "προφήτου", null, null, "προφητῶν", null, null),
+      createDeclensionRow("loc", "προφήτῃ", null, null, "προφήταις", null, null),
+      createDeclensionRow("ins", "προφήτῃ", null, null, "προφήταις", null, null),
+      createDeclensionRow("dat", "προφήτῃ", null, null, "προφήταις", null, null),
+      createDeclensionRow("ac", "προφήτην", null, null, "προφήτας", null, null),
+      createDeclensionRow("voc", "προφῆτα", null, null, "προφῆται", null, null),
+    ],
+  },
+  {
+    id: "demonstrative-near",
+    label: "Pronome demonstrativo (οὗτος, αὕτη, τοῦτο)",
+    note: "Quadro completo de proximidade da aula 27.",
+    rows: [
+      createDeclensionRow("nom", "οὗτος", "αὕτη", "τοῦτο", "οὗτοι", "αὗται", "ταῦτα"),
+      createDeclensionRow("gen", "τούτου", "ταύτης", "τούτου", "τούτων", "τούτων", "τούτων"),
+      createDeclensionRow("abl", "τούτου", "ταύτης", "τούτου", "τούτων", "τούτων", "τούτων"),
+      createDeclensionRow("loc", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
+      createDeclensionRow("ins", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
+      createDeclensionRow("dat", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
+      createDeclensionRow("ac", "τοῦτον", "ταύτην", "τοῦτο", "τούτους", "ταύτας", "ταῦτα"),
+      createDeclensionRow("voc", null, null, null, null, null, null),
+    ],
+  },
+  {
+    id: "demonstrative-far",
+    label: "Pronome demonstrativo (ἐκεῖνος, ἐκείνη, ἐκεῖνο)",
+    note: "Quadro completo de distância da aula 28.",
+    rows: [
+      createDeclensionRow("nom", "ἐκεῖνος", "ἐκείνη", "ἐκεῖνο", "ἐκεῖνοι", "ἐκεῖναι", "ἐκεῖνα"),
+      createDeclensionRow("gen", "ἐκείνου", "ἐκείνης", "ἐκείνου", "ἐκείνων", "ἐκείνων", "ἐκείνων"),
+      createDeclensionRow("abl", "ἐκείνου", "ἐκείνης", "ἐκείνου", "ἐκείνων", "ἐκείνων", "ἐκείνων"),
+      createDeclensionRow("loc", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
+      createDeclensionRow("ins", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
+      createDeclensionRow("dat", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
+      createDeclensionRow("ac", "ἐκεῖνον", "ἐκείνην", "ἐκεῖνο", "ἐκείνους", "ἐκείνας", "ἐκεῖνα"),
+      createDeclensionRow("voc", null, null, null, null, null, null),
+    ],
+  },
+  {
+    id: "present-active-participle",
+    label: "Particípio presente ativo (λύων, λύουσα, λῦον)",
+    note: "Quadro completo do particípio presente ativo da aula 31.",
+    rows: [
+      createDeclensionRow("nom", "λύων", "λύουσα", "λῦον", "λύοντες", "λύουσαι", "λύοντα"),
+      createDeclensionRow("gen", "λύοντος", "λυούσης", "λύοντος", "λυόντων", "λυουσῶν", "λυόντων"),
+      createDeclensionRow("abl", "λύοντος", "λυούσης", "λύοντος", "λυόντων", "λυουσῶν", "λυόντων"),
+      createDeclensionRow("loc", "λύοντι", "λυούσῃ", "λύοντι", "λύουσι", "λυούσαις", "λύουσι"),
+      createDeclensionRow("ins", "λύοντι", "λυούσῃ", "λύοντι", "λύουσι", "λυούσαις", "λύουσι"),
+      createDeclensionRow("dat", "λύοντι", "λυούσῃ", "λύοντι", "λύουσι", "λυούσαις", "λύουσι"),
+      createDeclensionRow("ac", "λύοντα", "λύουσαν", "λῦον", "λύοντας", "λυούσας", "λύοντα"),
+      createDeclensionRow("voc", null, null, null, null, null, null),
+    ],
+  },
+  {
+    id: "indefinite-pronoun",
+    label: "Pronome indefinido (τις, τι)",
+    note: "Quadro completo do pronome indefinido da aula 32.",
+    rows: [
+      createDeclensionRow("nom", "τις", "τις", "τι", "τινές", "τινές", "τινά"),
+      createDeclensionRow("gen", "τινός", "τινός", "τινός", "τινῶν", "τινῶν", "τινῶν"),
+      createDeclensionRow("abl", "τινός", "τινός", "τινός", "τινῶν", "τινῶν", "τινῶν"),
+      createDeclensionRow("loc", "τινί", "τινί", "τινί", "τισί(ν)", "τισί(ν)", "τισί(ν)"),
+      createDeclensionRow("ins", "τινί", "τινί", "τινί", "τισί(ν)", "τισί(ν)", "τισί(ν)"),
+      createDeclensionRow("dat", "τινί", "τινί", "τινί", "τισί(ν)", "τισί(ν)", "τισί(ν)"),
+      createDeclensionRow("ac", "τινά", "τινά", "τι", "τινάς", "τινάς", "τινά"),
+      createDeclensionRow("voc", null, null, null, null, null, null),
+    ],
+  },
+];
+
+function createIntensiveQuestion({
+  id,
+  lessonKey,
+  lessonLabel,
+  topicLabel,
+  promptLabel,
+  promptSymbol,
+  promptHint,
+  options,
+  answer,
+  insight,
+  coaching,
+}) {
+  return {
+    id,
+    lessonKey,
+    lessonLabel,
+    topicLabel,
+    promptLabel,
+    promptSymbol,
+    promptHint,
+    options,
+    answer,
+    insight,
+    coaching,
+  };
+}
+
+const intensiveTopics = [
+  { id: "all", label: "Todas as aulas (27-32)" },
+  { id: "a27", label: "Aula 27 | οὗτος, αὕτη, τοῦτο" },
+  { id: "a28", label: "Aula 28 | ἐκεῖνος, ἐκείνη, ἐκεῖνο" },
+  { id: "a29", label: "Aula 29 | Aoristo do indicativo ativo" },
+  { id: "a30", label: "Aula 30 | Preposições" },
+  { id: "a31", label: "Aula 31 | Presente do particípio ativo" },
+  { id: "a32", label: "Aula 32 | Pronomes indefinidos" },
+];
+
+const intensiveQuestionBank = [
+  createIntensiveQuestion({
+    id: "a27-1",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Pronomes demonstrativos de proximidade",
+    promptLabel: "Que série demonstrativa aponta para o que está perto ou foi mencionado por último?",
+    promptSymbol: "Pronomes demonstrativos",
+    promptHint: "Base: aula 27.",
+    options: [
+      "οὗτος | αὕτη | τοῦτο",
+      "ἐκεῖνος | ἐκείνη | ἐκεῖνο",
+      "τις | τι",
+      "ὅς | ἥ | ὅ",
+    ],
+    answer: "οὗτος | αὕτη | τοῦτο",
+    insight:
+      "Na aula 27, essa série foi apresentada como demonstrativo de proximidade e retomada imediata.",
+    coaching:
+      "Quando o referente está perto no discurso, comece por οὗτος/αὕτη/τοῦτο.",
+  }),
+  createIntensiveQuestion({
+    id: "a27-2",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Declinação do demonstrativo próximo",
+    promptLabel: "Qual é o nominativo plural neutro de οὗτος?",
+    promptSymbol: "Nom. Pl. Neutro",
+    promptHint: "Consulte a tabela da aula 27.",
+    options: ["ταῦτα", "τοῦτα", "τούτοις", "τούτων"],
+    answer: "ταῦτα",
+    insight:
+      "No plural neutro nominativo/acusativo, a forma é ταῦτα.",
+    coaching:
+      "Nos neutros, nom. e ac. costumam coincidir; isso ajuda a fixar ταῦτα.",
+  }),
+  createIntensiveQuestion({
+    id: "a27-3",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Declinação do demonstrativo próximo",
+    promptLabel: "Qual é o genitivo singular feminino de αὕτη?",
+    promptSymbol: "Gen. Sg. Fem.",
+    promptHint: "A forma está na coluna feminina singular da aula 27.",
+    options: ["ταύτης", "ταύτῃ", "ταύτην", "ταύτας"],
+    answer: "ταύτης",
+    insight:
+      "A forma correta do genitivo singular feminino é ταύτης.",
+    coaching:
+      "Genitivo feminino singular em -ης aparece com frequência nesse paradigma.",
+  }),
+  createIntensiveQuestion({
+    id: "a27-4",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Declinação do demonstrativo próximo",
+    promptLabel: "Qual é o dativo plural masculino de οὗτος?",
+    promptSymbol: "Dat. Pl. Masc.",
+    promptHint: "Observe as formas com -οις.",
+    options: ["τούτοις", "τούτους", "τούτων", "οὗτοι"],
+    answer: "τούτοις",
+    insight:
+      "No dativo plural masculino, a forma é τούτοις.",
+    coaching:
+      "No plural masculino, o final -οις é um sinal forte de dativo/locativo/instrumental.",
+  }),
+  createIntensiveQuestion({
+    id: "a27-5",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: Οὗτός ἐστιν ὁ βασιλεὺς τῶν Ἰουδαίων.",
+    promptSymbol: "Lc 23.38",
+    promptHint: "Base de exercício da aula 27.",
+    options: [
+      "Este é o rei dos judeus.",
+      "Aquele é o rei de Israel.",
+      "Isto é a luz dos homens.",
+      "Este era o rei de Davi.",
+    ],
+    answer: "Este é o rei dos judeus.",
+    insight:
+      "A aula traz essa tradução como modelo: “Este é o rei dos judeus.”",
+    coaching:
+      "Em frases copulativas com οὗτος ἐστιν, comece traduzindo “este é...”.",
+  }),
+  createIntensiveQuestion({
+    id: "a27-6",
+    lessonKey: "a27",
+    lessonLabel: "Aula 27",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: Τοῦτο τὸ αἷμα τῆς διαθήκης.",
+    promptSymbol: "Hb 9.20",
+    promptHint: "Exercício da aula 27.",
+    options: [
+      "Isto é o sangue da aliança.",
+      "Este é o caminho da verdade.",
+      "Aquele é o sinal da promessa.",
+      "Isto era o sangue dos profetas.",
+    ],
+    answer: "Isto é o sangue da aliança.",
+    insight:
+      "A tradução-modelo da aula 27 foi “Isto [é] o sangue da aliança.”",
+    coaching:
+      "Quando τοῦτο introduz um nome neutro, o português tende a pedir “isto”.",
+  }),
+  createIntensiveQuestion({
+    id: "a28-1",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Pronomes demonstrativos de distância",
+    promptLabel: "Que série demonstrativa aponta para o que está longe, distante ou ausente?",
+    promptSymbol: "Pronomes demonstrativos",
+    promptHint: "Base: aula 28.",
+    options: [
+      "ἐκεῖνος | ἐκείνη | ἐκεῖνο",
+      "οὗτος | αὕτη | τοῦτο",
+      "τις | τι",
+      "αὐτός | αὐτή | αὐτό",
+    ],
+    answer: "ἐκεῖνος | ἐκείνη | ἐκεῖνο",
+    insight:
+      "A aula 28 apresenta essa série como demonstrativo de distância.",
+    coaching:
+      "Se a ideia for “aquele/aquela/aquilo”, pense primeiro em ἐκεῖνος.",
+  }),
+  createIntensiveQuestion({
+    id: "a28-2",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Declinação do demonstrativo distante",
+    promptLabel: "Qual é o nominativo plural feminino de ἐκεῖνος?",
+    promptSymbol: "Nom. Pl. Fem.",
+    promptHint: "Coluna feminina plural da aula 28.",
+    options: ["ἐκεῖναι", "ἐκείνας", "ἐκείνων", "ἐκείνοις"],
+    answer: "ἐκεῖναι",
+    insight:
+      "No nominativo plural feminino, a forma é ἐκεῖναι.",
+    coaching:
+      "No feminino plural, diferencie ἐκεῖναι (nom.) de ἐκείνας (ac.).",
+  }),
+  createIntensiveQuestion({
+    id: "a28-3",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Declinação do demonstrativo distante",
+    promptLabel: "Qual é o acusativo plural masculino de ἐκεῖνος?",
+    promptSymbol: "Ac. Pl. Masc.",
+    promptHint: "Procure a forma em -ους.",
+    options: ["ἐκείνους", "ἐκεῖνοι", "ἐκείνων", "ἐκεῖνα"],
+    answer: "ἐκείνους",
+    insight:
+      "No acusativo plural masculino, a forma correta é ἐκείνους.",
+    coaching:
+      "No masc. plural, -ους costuma marcar acusativo.",
+  }),
+  createIntensiveQuestion({
+    id: "a28-4",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Declinação do demonstrativo distante",
+    promptLabel: "Qual é o dativo singular feminino de ἐκείνη?",
+    promptSymbol: "Dat. Sg. Fem.",
+    promptHint: "Observe a terminação feminina singular com iota subscrito.",
+    options: ["ἐκείνῃ", "ἐκείνης", "ἐκείνην", "ἐκείνη"],
+    answer: "ἐκείνῃ",
+    insight:
+      "A forma dativa singular feminina é ἐκείνῃ.",
+    coaching:
+      "No feminino singular, o dativo costuma aparecer com eta + iota subscrito.",
+  }),
+  createIntensiveQuestion({
+    id: "a28-5",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: οὐκ ἧν ἐκεῖνος τὸ φῶς.",
+    promptSymbol: "Jo 1.8",
+    promptHint: "Exercício da aula 28.",
+    options: [
+      "Não era aquele (ele) a luz.",
+      "Este era a luz do mundo.",
+      "Aquilo foi a luz dos homens.",
+      "Não era esta a verdade.",
+    ],
+    answer: "Não era aquele (ele) a luz.",
+    insight:
+      "A tradução-modelo mostrada na aula foi “Não era aquele (ele) a luz.”",
+    coaching:
+      "No contexto joanino, ἐκεῖνος retoma uma pessoa previamente mencionada.",
+  }),
+  createIntensiveQuestion({
+    id: "a28-6",
+    lessonKey: "a28",
+    lessonLabel: "Aula 28",
+    topicLabel: "Tradução de expressão",
+    promptLabel: "Como traduzir ἐν ἐκείνῃ τῇ ὥρᾳ?",
+    promptSymbol: "Mt 18.1",
+    promptHint: "A expressão aparece no exercício final da aula.",
+    options: [
+      "Naquela hora.",
+      "Nessa mesma casa.",
+      "Naquele templo.",
+      "Com aquela voz.",
+    ],
+    answer: "Naquela hora.",
+    insight:
+      "Aula 28: “ἐν ἐκείνῃ τῇ ὥρᾳ” foi traduzido como “Naquela hora.”",
+    coaching:
+      "Com ἐν + dativo, a leitura mais comum é locativa: “em/na...”.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-1",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Aoristo do indicativo ativo",
+    promptLabel: "No paradigma mostrado de εὑρίσκω, qual é a forma da 1a pessoa singular no aoristo ativo?",
+    promptSymbol: "Aoristo ativo",
+    promptHint: "Tabela da aula 29.",
+    options: ["εὗρον", "εὗρες", "εὗρε", "εὗρομεν"],
+    answer: "εὗρον",
+    insight:
+      "No quadro apresentado, 1a singular de εὑρίσκω no aoristo ativo é εὗρον.",
+    coaching:
+      "Memorize em bloco: εὗρον, εὗρες, εὗρε(ν), εὗρομεν, εὗρετε, εὗρον.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-2",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Aoristo do indicativo ativo",
+    promptLabel: "No mesmo paradigma, qual forma corresponde à 2a pessoa plural?",
+    promptSymbol: "Aoristo ativo",
+    promptHint: "Observe a linha da 2a plural.",
+    options: ["εὗρετε", "εὗρομεν", "εὗρον", "εὗρες"],
+    answer: "εὗρετε",
+    insight:
+      "A forma da 2a pessoa plural é εὗρετε.",
+    coaching:
+      "No aoristo sigmático regular, -τε aparece como pista útil para 2a plural.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-3",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Aoristo do indicativo ativo",
+    promptLabel: "Que forma do paradigma pode representar tanto 1a singular quanto 3a plural?",
+    promptSymbol: "Ambiguidade formal",
+    promptHint: "A tabela da aula mostra repetição da forma.",
+    options: ["εὗρον", "εὗρετε", "εὗρες", "εὗρε(ν)"],
+    answer: "εὗρον",
+    insight:
+      "No quadro da aula, εὗρον aparece para 1a singular e também para 3a plural.",
+    coaching:
+      "Quando a forma coincidir, use o contexto sintático para decidir pessoa e número.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-4",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Leitura em Apocalipse 20",
+    promptLabel: "Na sequência de Apocalipse 20.2-3, qual forma significa “e lançou”?",
+    promptSymbol: "καὶ ... αὐτὸν εἰς τὴν ἄβυσσον",
+    promptHint: "Leitura principal da aula.",
+    options: ["ἔβαλεν", "ἐκράτησεν", "ἔδησεν", "ἔκλεισεν"],
+    answer: "ἔβαλεν",
+    insight:
+      "A leitura da aula destaca ἔβαλεν com o sentido de “lançou”.",
+    coaching:
+      "Em narrativas, agrupe os aoristos em cadeia para captar a progressão dos eventos.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-5",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: ἐν τῷ ἱερῷ μαθητής εὗρε Ἰησοῦν.",
+    promptSymbol: "Exercício da aula 29",
+    promptHint: "Considere a ordem grega da frase.",
+    options: [
+      "No templo, um discípulo encontrou Jesus.",
+      "No templo, Jesus encontrou um discípulo.",
+      "Um discípulo no templo era Jesus.",
+      "No templo, os discípulos aprenderam Jesus.",
+    ],
+    answer: "No templo, um discípulo encontrou Jesus.",
+    insight:
+      "Essa foi a tradução verificada na própria aula 29.",
+    coaching:
+      "Comece pelo verbo (εὗρε), depois localize sujeito e objeto pelo caso.",
+  }),
+  createIntensiveQuestion({
+    id: "a29-6",
+    lessonKey: "a29",
+    lessonLabel: "Aula 29",
+    topicLabel: "Aspecto verbal",
+    promptLabel: "Na abordagem da aula, o aoristo narrativo normalmente apresenta a ação como:",
+    promptSymbol: "Aspecto do aoristo",
+    promptHint: "Ligado ao modo de enxergar a ação no texto.",
+    options: [
+      "Evento pontual/global na narrativa",
+      "Ação progressiva contínua",
+      "Estado resultante permanente",
+      "Ordem imperativa",
+    ],
+    answer: "Evento pontual/global na narrativa",
+    insight:
+      "A aula trabalha o aoristo em contexto narrativo, marcando eventos completos na linha do relato.",
+    coaching:
+      "Leia o aoristo em bloco narrativo: ele tende a avançar a história por eventos.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-1",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Preposições e casos",
+    promptLabel: "Segundo a aula, o significado da preposição depende principalmente de quê?",
+    promptSymbol: "Preposição",
+    promptHint: "Veja o conceito apresentado no slide principal.",
+    options: [
+      "Do caso que ela acompanha (genitivo, acusativo ou dativo)",
+      "Do tempo verbal principal da oração",
+      "Do gênero do sujeito apenas",
+      "Da posição do acento agudo",
+    ],
+    answer: "Do caso que ela acompanha (genitivo, acusativo ou dativo)",
+    insight:
+      "A aula enfatiza que a regência de caso é central para determinar o valor da preposição.",
+    coaching:
+      "Antes de traduzir a preposição, identifique o caso do termo regido.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-2",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Preposições com dativo",
+    promptLabel: "Qual preposição foi listada especificamente com dativo e traduzida como “com”?",
+    promptSymbol: "Preposições + dativo",
+    promptHint: "Quadro da aula 30.",
+    options: ["σύν", "εἰς", "ἀνά", "ἐκ"],
+    answer: "σύν",
+    insight:
+      "No quadro com dativo, σύν aparece com o valor de companhia: “com”.",
+    coaching:
+      "σύν + dativo é associação direta; use isso como gatilho rápido de leitura.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-3",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Preposições com acusativo",
+    promptLabel: "Qual preposição da aula 30 foi apresentada com acusativo no sentido de movimento para dentro?",
+    promptSymbol: "Preposições + acusativo",
+    promptHint: "Procure a entrada com “para (dentro)”.",
+    options: ["εἰς", "ἐν", "ἀπό", "πρό"],
+    answer: "εἰς",
+    insight:
+      "No quadro das preposições com acusativo, εἰς foi explicitamente ligada a “para (dentro)”.",
+    coaching:
+      "Quando houver ideia de entrada/direção para dentro, εἰς com acusativo costuma ser o padrão.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-4",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Preposições com genitivo",
+    promptLabel: "Qual preposição foi listada com genitivo no sentido de “de (de dentro para fora)”?",
+    promptSymbol: "Preposições + genitivo",
+    promptHint: "Entrada destacada no quadro genitivo.",
+    options: ["ἐκ", "ἐπί", "πρός", "κατά"],
+    answer: "ἐκ",
+    insight:
+      "A aula apresenta ἐκ com genitivo para a ideia de saída: “de dentro para fora”.",
+    coaching:
+      "Leia ἐκ como movimento de origem/saída, frequentemente ligado ao ablativo/genitivo.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-5",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: ἀναβαίνω πρὸς τὸν πατέρα μου.",
+    promptSymbol: "Jo 20.17",
+    promptHint: "Exercício da aula 30.",
+    options: [
+      "Subo para o meu pai.",
+      "Venho do meu pai.",
+      "Permaneço com o meu pai.",
+      "Falo sobre o meu pai.",
+    ],
+    answer: "Subo para o meu pai.",
+    insight:
+      "Na correção da aula 30, a frase foi traduzida exatamente assim.",
+    coaching:
+      "πρός + acusativo tende a marcar direção para alguém/algo.",
+  }),
+  createIntensiveQuestion({
+    id: "a30-6",
+    lessonKey: "a30",
+    lessonLabel: "Aula 30",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: ὁ κριτὴς πρὸ τῶν θυρῶν.",
+    promptSymbol: "Tg 5.9",
+    promptHint: "Exercício da aula 30.",
+    options: [
+      "O juiz está diante das portas.",
+      "O juiz vai para as portas.",
+      "O juiz vem das portas.",
+      "O juiz com as portas.",
+    ],
+    answer: "O juiz está diante das portas.",
+    insight:
+      "A correção da aula 30 traz “O juiz [está] diante das portas.”",
+    coaching:
+      "πρό com genitivo costuma marcar anterioridade ou posição “diante de”.",
+  }),
+  createIntensiveQuestion({
+    id: "a31-1",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Particípio: natureza",
+    promptLabel: "Segundo a aula, o particípio combina quais duas dimensões?",
+    promptSymbol: "Particípio",
+    promptHint: "Veja o slide de introdução do particípio.",
+    options: [
+      "Características nominais e verbais",
+      "Somente função adverbial",
+      "Somente flexão verbal",
+      "Somente função preposicional",
+    ],
+    answer: "Características nominais e verbais",
+    insight:
+      "A aula 31 enfatiza o caráter verbo-nominal do particípio.",
+    coaching:
+      "Analise particípios em duas etapas: forma verbal + função sintática nominal.",
+  }),
+  createIntensiveQuestion({
+    id: "a31-2",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Declinação do particípio presente ativo",
+    promptLabel: "Qual é o nominativo singular masculino do particípio presente ativo de λύω?",
+    promptSymbol: "Nom. Sg. Masc.",
+    promptHint: "Tabela central da aula 31.",
+    options: ["λύων", "λύοντα", "λύοντος", "λύοντι"],
+    answer: "λύων",
+    insight:
+      "No nominativo singular masculino, a forma é λύων.",
+    coaching:
+      "No masc. singular do particípio presente ativo, a forma-base costuma terminar em -ων.",
+  }),
+  createIntensiveQuestion({
+    id: "a31-3",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Declinação do particípio presente ativo",
+    promptLabel: "Qual é o acusativo plural feminino do particípio presente ativo de λύω?",
+    promptSymbol: "Ac. Pl. Fem.",
+    promptHint: "Linha do acusativo na tabela da aula.",
+    options: ["λυούσας", "λύουσαι", "λυουσῶν", "λυούσαις"],
+    answer: "λυούσας",
+    insight:
+      "No acusativo plural feminino, a forma correta é λυούσας.",
+    coaching:
+      "No feminino plural, compare -αι (nom.), -ας (ac.), -ῶν (gen.), -αις (dat.).",
+  }),
+  createIntensiveQuestion({
+    id: "a31-4",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Declinação do particípio presente ativo",
+    promptLabel: "Qual é o genitivo singular neutro do particípio presente ativo de λύω?",
+    promptSymbol: "Gen. Sg. Neutro",
+    promptHint: "Observe que masc. e neutro compartilham formas em várias células.",
+    options: ["λύοντος", "λυούσης", "λύοντι", "λῦον"],
+    answer: "λύοντος",
+    insight:
+      "No genitivo singular, masc. e neutro aparecem como λύοντος.",
+    coaching:
+      "No particípio presente ativo, masc./neutro têm paralelos fortes; use isso para acelerar a leitura.",
+  }),
+  createIntensiveQuestion({
+    id: "a31-5",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Declinação do particípio presente ativo",
+    promptLabel: "Qual é o dativo plural neutro do particípio presente ativo de λύω?",
+    promptSymbol: "Dat. Pl. Neutro",
+    promptHint: "Linha do dativo plural na tabela.",
+    options: ["λύουσι", "λυούσαις", "λυόντων", "λύοντα"],
+    answer: "λύουσι",
+    insight:
+      "No dativo plural neutro (e também masculino), a forma é λύουσι.",
+    coaching:
+      "Lembre que masc. e neutro plural no dativo convergem em -ουσι.",
+  }),
+  createIntensiveQuestion({
+    id: "a31-6",
+    lessonKey: "a31",
+    lessonLabel: "Aula 31",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: δουλεύων τῷ κυρίῳ.",
+    promptSymbol: "At 20.19",
+    promptHint: "Exercício da aula 31.",
+    options: [
+      "Servindo ao Senhor.",
+      "Ele servirá ao Senhor.",
+      "Servi o Senhor.",
+      "Com o Senhor servimos.",
+    ],
+    answer: "Servindo ao Senhor.",
+    insight:
+      "A correção da aula 31 trouxe a leitura participial “Servindo ao Senhor.”",
+    coaching:
+      "Particípio presente ativo costuma soar bem em português com gerúndio em contexto de ação simultânea.",
+  }),
+  createIntensiveQuestion({
+    id: "a32-1",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Pronomes indefinidos",
+    promptLabel: "Que série foi trabalhada na aula 32 como pronome indefinido?",
+    promptSymbol: "Pronomes indefinidos",
+    promptHint: "Base: aula 32.",
+    options: ["τις | τι", "οὗτος | αὕτη | τοῦτο", "ἐκεῖνος | ἐκείνη | ἐκεῖνο", "ὅδε | ἥδε | τόδε"],
+    answer: "τις | τι",
+    insight:
+      "A aula 32 apresenta τις/τι como núcleo dos pronomes indefinidos.",
+    coaching:
+      "Sem acento forte contrastivo, τις/τι costuma trazer valor de “alguém/alguma coisa”.",
+  }),
+  createIntensiveQuestion({
+    id: "a32-2",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Uso sintático",
+    promptLabel: "Segundo a aula, τις/τι é usado como qualificador ou em que tipo de oração?",
+    promptSymbol: "Uso de τις/τι",
+    promptHint: "Veja o slide de conceito.",
+    options: [
+      "Orações condicionais",
+      "Orações finais apenas",
+      "Somente discursos diretos",
+      "Somente perguntas retóricas",
+    ],
+    answer: "Orações condicionais",
+    insight:
+      "A aula cita explicitamente o uso em construções condicionais como ἐάν τις ἁμάρτῃ.",
+    coaching:
+      "Quando você vir εἴ/ἐάν + τις, espere estrutura condicional.",
+  }),
+  createIntensiveQuestion({
+    id: "a32-3",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Declinação de τις/τι",
+    promptLabel: "Qual é o nominativo singular masculino/feminino de τις/τι?",
+    promptSymbol: "Nom. Sg. Masc./Fem.",
+    promptHint: "Quadro da aula 32.",
+    options: ["τις", "τινά", "τινός", "τι"],
+    answer: "τις",
+    insight:
+      "No singular masc./fem., o nominativo é τις.",
+    coaching:
+      "No singular, diferencie bem τις (masc/fem) e τι (neutro).",
+  }),
+  createIntensiveQuestion({
+    id: "a32-4",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Declinação de τις/τι",
+    promptLabel: "Qual é o nominativo singular neutro de τις/τι?",
+    promptSymbol: "Nom. Sg. Neutro",
+    promptHint: "Coluna neutra singular da tabela.",
+    options: ["τι", "τις", "τινά", "τινί"],
+    answer: "τι",
+    insight:
+      "No neutro singular nominativo (e acusativo), a forma é τι.",
+    coaching:
+      "No neutro, a forma curta τι é extremamente frequente.",
+  }),
+  createIntensiveQuestion({
+    id: "a32-5",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Declinação de τις/τι",
+    promptLabel: "Qual é o dativo plural comum de τις/τι?",
+    promptSymbol: "Dat. Pl.",
+    promptHint: "Observe o final em -σι(ν).",
+    options: ["τισί(ν)", "τινῶν", "τινάς", "τινές"],
+    answer: "τισί(ν)",
+    insight:
+      "No dativo plural (masc./fem. e neutro), a forma apresentada é τισί(ν).",
+    coaching:
+      "No plural indefinido, -σι(ν) é um bom alerta para dativo.",
+  }),
+  createIntensiveQuestion({
+    id: "a32-6",
+    lessonKey: "a32",
+    lessonLabel: "Aula 32",
+    topicLabel: "Tradução de sentença",
+    promptLabel: "Traduza: ὥστε εἴ τις ἐν Χριστῷ, καινὴ κτίσις.",
+    promptSymbol: "2Co 5.17",
+    promptHint: "Exercício final da aula 32.",
+    options: [
+      "De modo que se alguém está em Cristo, é nova criação.",
+      "Portanto, aquele que está em Cristo será santo.",
+      "Assim, estes em Cristo são os discípulos.",
+      "De modo que se isto em Cristo, então justiça.",
+    ],
+    answer: "De modo que se alguém está em Cristo, é nova criação.",
+    insight:
+      "A correção da aula 32 segue essa linha: “se alguém em Cristo, nova criação”.",
+    coaching:
+      "Em εἴ τις, preserve o valor indefinido-condicional: “se alguém...”.",
+  }),
+];
+
 const course = [
   {
     id: "module-1",
@@ -2328,6 +3238,19 @@ const defaultProgress = {
   vocabDeckId: "full",
   vocabSearch: "",
   vocabFilter: "all",
+  declensionChartId: declensionCharts[0]?.id || "article",
+  declensionTrainerMode: "form",
+  declensionAnswered: 0,
+  declensionCorrect: 0,
+  declensionStreak: 0,
+  declensionBestStreak: 0,
+  studyMode: "journey",
+  intensiveTopicId: "all",
+  intensiveAnswered: 0,
+  intensiveCorrect: 0,
+  intensiveStreak: 0,
+  intensiveBestStreak: 0,
+  intensiveCurrentQuestionId: intensiveQuestionBank[0]?.id || null,
 };
 
 const refs = {
@@ -2337,6 +3260,10 @@ const refs = {
   accuracyRate: document.querySelector("#accuracy-rate"),
   cardsMastered: document.querySelector("#cards-mastered"),
   cardsMasteredMeta: document.querySelector("#cards-mastered-meta"),
+  tabJourneyButton: document.querySelector("#tab-journey-button"),
+  tabIntensiveButton: document.querySelector("#tab-intensive-button"),
+  modeTabButtons: Array.from(document.querySelectorAll(".mode-tab")),
+  paneContents: Array.from(document.querySelectorAll(".pane-content")),
   modulePath: document.querySelector("#module-path"),
   lessonTitle: document.querySelector("#lesson-title"),
   lessonModule: document.querySelector("#lesson-module"),
@@ -2351,6 +3278,20 @@ const refs = {
   nextButton: document.querySelector("#next-button"),
   resumeButton: document.querySelector("#resume-button"),
   resetButton: document.querySelector("#reset-button"),
+  declensionChartSelect: document.querySelector("#declension-chart-select"),
+  declensionModeSelect: document.querySelector("#declension-mode-select"),
+  declensionAccuracy: document.querySelector("#declension-accuracy"),
+  declensionStreak: document.querySelector("#declension-streak"),
+  declensionBestStreak: document.querySelector("#declension-best-streak"),
+  declensionBoardTitle: document.querySelector("#declension-board-title"),
+  declensionBoardNote: document.querySelector("#declension-board-note"),
+  declensionTableWrap: document.querySelector("#declension-table-wrap"),
+  declensionCaseGuide: document.querySelector("#declension-case-guide"),
+  declensionCounter: document.querySelector("#declension-counter"),
+  declensionPrompt: document.querySelector("#declension-prompt"),
+  declensionChoices: document.querySelector("#declension-choices"),
+  declensionFeedback: document.querySelector("#declension-feedback"),
+  declensionNextButton: document.querySelector("#declension-next-button"),
   vocabDeckSelect: document.querySelector("#vocab-deck-select"),
   vocabSearch: document.querySelector("#vocab-search"),
   filterChips: Array.from(document.querySelectorAll(".filter-chip")),
@@ -2367,6 +3308,18 @@ const refs = {
   randomCardButton: document.querySelector("#random-card-button"),
   vocabResultsCount: document.querySelector("#vocab-results-count"),
   vocabResults: document.querySelector("#vocab-results"),
+  intensiveTopicSelect: document.querySelector("#intensive-topic-select"),
+  intensiveAnswered: document.querySelector("#intensive-answered"),
+  intensiveAccuracy: document.querySelector("#intensive-accuracy"),
+  intensiveStreak: document.querySelector("#intensive-streak"),
+  intensiveBestStreak: document.querySelector("#intensive-best-streak"),
+  intensiveLessonChip: document.querySelector("#intensive-lesson-chip"),
+  intensivePromptPanel: document.querySelector("#intensive-prompt-panel"),
+  intensiveChoices: document.querySelector("#intensive-choices"),
+  intensiveFeedback: document.querySelector("#intensive-feedback"),
+  intensiveNextButton: document.querySelector("#intensive-next-button"),
+  intensiveRandomButton: document.querySelector("#intensive-random-button"),
+  intensiveResetButton: document.querySelector("#intensive-reset-button"),
 };
 
 const state = loadProgress();
@@ -2377,6 +3330,13 @@ let vocabChoiceOptions = [];
 let vocabChoiceLocked = false;
 let vocabSelectedOption = null;
 let vocabWasCorrect = null;
+let declensionChallenge = null;
+let declensionChoiceLocked = false;
+let declensionSelectedOption = null;
+let declensionWasCorrect = null;
+let intensiveChoiceLocked = false;
+let intensiveSelectedOption = null;
+let intensiveWasCorrect = null;
 
 document.title = `GREGO | ${sourceBook.title}`;
 
@@ -2399,6 +3359,8 @@ refs.resetButton.addEventListener("click", () => {
   Object.assign(state, clone(defaultProgress));
   interactionLocked = false;
   resetVocabularyChallengeState();
+  resetDeclensionTrainerState(true);
+  resetIntensiveState();
   saveProgress();
   render();
 });
@@ -2426,6 +3388,27 @@ refs.filterChips.forEach((chip) => {
     renderVocabulary();
     saveProgress();
   });
+});
+
+refs.declensionChartSelect?.addEventListener("change", (event) => {
+  state.declensionChartId = getDeclensionChartById(event.target.value || "").id;
+  resetDeclensionTrainerState(true);
+  renderDeclensionLab();
+  saveProgress();
+});
+
+refs.declensionModeSelect?.addEventListener("change", (event) => {
+  const nextMode = event.target.value === "identify" ? "identify" : "form";
+  state.declensionTrainerMode = nextMode;
+  resetDeclensionTrainerState(true);
+  renderDeclensionLab();
+  saveProgress();
+});
+
+refs.declensionNextButton?.addEventListener("click", () => {
+  resetDeclensionTrainerState(true);
+  renderDeclensionLab();
+  saveProgress();
 });
 
 refs.toggleMasteredButton.addEventListener("click", () => {
@@ -2486,8 +3469,59 @@ refs.randomCardButton.addEventListener("click", () => {
   saveProgress();
 });
 
+refs.tabJourneyButton?.addEventListener("click", () => {
+  state.studyMode = "journey";
+  renderStudyMode();
+  saveProgress();
+});
+
+refs.tabIntensiveButton?.addEventListener("click", () => {
+  state.studyMode = "intensive";
+  renderStudyMode();
+  renderIntensive();
+  saveProgress();
+});
+
+refs.intensiveTopicSelect?.addEventListener("change", (event) => {
+  state.intensiveTopicId = getIntensiveTopicById(event.target.value || "all").id;
+  const scopedQuestions = getIntensiveQuestionsByTopic(state.intensiveTopicId);
+  state.intensiveCurrentQuestionId = scopedQuestions[0]?.id || null;
+  resetIntensiveState();
+  renderIntensive();
+  saveProgress();
+});
+
+refs.intensiveNextButton?.addEventListener("click", () => {
+  goToNextIntensiveQuestion({ random: false });
+});
+
+refs.intensiveRandomButton?.addEventListener("click", () => {
+  goToNextIntensiveQuestion({ random: true });
+});
+
+refs.intensiveResetButton?.addEventListener("click", () => {
+  const confirmed = window.confirm(
+    "Deseja zerar apenas o desempenho do Intensivo para Prova?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  state.intensiveAnswered = 0;
+  state.intensiveCorrect = 0;
+  state.intensiveStreak = 0;
+  state.intensiveBestStreak = 0;
+  const scopedQuestions = getIntensiveQuestionsByTopic(state.intensiveTopicId);
+  state.intensiveCurrentQuestionId = scopedQuestions[0]?.id || null;
+  resetIntensiveState();
+  renderIntensive();
+  saveProgress();
+});
+
 syncCurrentLesson();
 syncCurrentCard(getFilteredCards());
+syncCurrentIntensiveQuestion();
 render();
 
 function clone(value) {
@@ -2565,11 +3599,19 @@ function splitChoiceLabel(value) {
     return null;
   }
 
-  const [greekPart, ...translationParts] = text.split("|");
-  const greek = greekPart.trim();
-  const translation = translationParts.join("|").trim();
+  const segments = text.split("|").map((segment) => segment.trim()).filter(Boolean);
+
+  if (segments.length !== 2) {
+    return null;
+  }
+
+  const [greek, translation] = segments;
 
   if (!greek || !translation) {
+    return null;
+  }
+
+  if (shouldUseGreekFont(translation)) {
     return null;
   }
 
@@ -2910,6 +3952,639 @@ function handleVocabularyChoice(option, currentCard) {
   saveProgress();
 }
 
+function getDeclensionCaseMeta(caseId) {
+  return (
+    DECLENSION_CASES.find((caseMeta) => caseMeta.id === caseId) ||
+    DECLENSION_CASES[0]
+  );
+}
+
+function getDeclensionChartById(chartId) {
+  return (
+    declensionCharts.find((chart) => chart.id === chartId) || declensionCharts[0]
+  );
+}
+
+function getActiveDeclensionChart() {
+  return getDeclensionChartById(state?.declensionChartId || declensionCharts[0].id);
+}
+
+function getDeclensionEntries(chart) {
+  const entries = [];
+
+  chart.rows.forEach((row) => {
+    const caseMeta = getDeclensionCaseMeta(row.caseId);
+
+    DECLENSION_NUMBERS.forEach((numberMeta) => {
+      DECLENSION_GENDERS.forEach((genderMeta) => {
+        const form = row[numberMeta.id][genderMeta.id];
+
+        if (!form) {
+          return;
+        }
+
+        entries.push({
+          form,
+          caseId: row.caseId,
+          caseMeta,
+          numberId: numberMeta.id,
+          numberLabel: numberMeta.label,
+          genderId: genderMeta.id,
+          genderLabel: genderMeta.label,
+          genderShort: genderMeta.short,
+        });
+      });
+    });
+  });
+
+  return entries;
+}
+
+function formatDeclensionAnalysis(entry) {
+  return `${entry.caseMeta.label} • ${entry.numberLabel} • ${entry.genderLabel}`;
+}
+
+function getUniqueFormEntries(entries) {
+  const formCounts = new Map();
+  entries.forEach((entry) => {
+    formCounts.set(entry.form, (formCounts.get(entry.form) || 0) + 1);
+  });
+
+  return entries.filter((entry) => formCounts.get(entry.form) === 1);
+}
+
+function shuffleArray(values) {
+  const copy = [...values];
+
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+  }
+
+  return copy;
+}
+
+function buildChallengeOptions(answer, distractors) {
+  const uniqueDistractors = Array.from(new Set(distractors)).filter(
+    (option) => option !== answer
+  );
+  const pickedDistractors = shuffleArray(uniqueDistractors).slice(0, 3);
+  return shuffleArray([answer, ...pickedDistractors]);
+}
+
+function createDeclensionChallenge() {
+  const chart = getActiveDeclensionChart();
+  const entries = getDeclensionEntries(chart);
+  const mode = state.declensionTrainerMode === "identify" ? "identify" : "form";
+
+  if (!entries.length) {
+    return null;
+  }
+
+  if (mode === "identify") {
+    const identifyPool = getUniqueFormEntries(entries);
+    const pool = identifyPool.length ? identifyPool : entries;
+    const entry = pool[Math.floor(Math.random() * pool.length)];
+    const answer = formatDeclensionAnalysis(entry);
+    const distractors = entries
+      .map((candidate) => formatDeclensionAnalysis(candidate))
+      .filter((candidate) => candidate !== answer);
+
+    return {
+      chartId: chart.id,
+      mode,
+      entry,
+      answer,
+      options: buildChallengeOptions(answer, distractors),
+      promptLabel: "Qual análise morfológica melhor descreve esta forma?",
+      promptSymbol: entry.form,
+      promptHint:
+        "Leia a forma no quadro e identifique caso, número e gênero com precisão.",
+    };
+  }
+
+  const entry = entries[Math.floor(Math.random() * entries.length)];
+  const answer = entry.form;
+  const distractors = entries.map((candidate) => candidate.form).filter(
+    (candidate) => candidate !== answer
+  );
+
+  return {
+    chartId: chart.id,
+    mode,
+    entry,
+    answer,
+    options: buildChallengeOptions(answer, distractors),
+    promptLabel: "Selecione a forma correta para esta célula do quadro.",
+    promptSymbol: `${entry.caseMeta.abbr} • ${entry.numberLabel} • ${entry.genderShort}`,
+    promptHint:
+      "Comece pela linha do caso, depois confirme a coluna de número e gênero.",
+  };
+}
+
+function getDeclensionInsight(challenge) {
+  const entry = challenge.entry;
+
+  if (challenge.mode === "identify") {
+    return `${entry.form} corresponde a ${formatDeclensionAnalysis(entry)}. ${entry.caseMeta.functionHint}`;
+  }
+
+  return `${entry.form} ocupa a célula ${entry.caseMeta.label} ${entry.numberLabel.toLowerCase()} ${entry.genderLabel.toLowerCase()}. ${entry.caseMeta.functionHint}`;
+}
+
+function resetDeclensionTrainerState(forceNewChallenge = false) {
+  if (forceNewChallenge || !declensionChallenge) {
+    declensionChallenge = createDeclensionChallenge();
+  }
+
+  declensionChoiceLocked = false;
+  declensionSelectedOption = null;
+  declensionWasCorrect = null;
+}
+
+function handleDeclensionChoice(option) {
+  if (!declensionChallenge || declensionChoiceLocked) {
+    return;
+  }
+
+  declensionChoiceLocked = true;
+  declensionSelectedOption = option;
+  declensionWasCorrect = option === declensionChallenge.answer;
+
+  state.declensionAnswered += 1;
+
+  if (declensionWasCorrect) {
+    state.declensionCorrect += 1;
+    state.declensionStreak += 1;
+    state.declensionBestStreak = Math.max(
+      state.declensionBestStreak,
+      state.declensionStreak
+    );
+  } else {
+    state.declensionStreak = 0;
+  }
+
+  renderDeclensionLab();
+  saveProgress();
+}
+
+function renderDeclensionTable(chart) {
+  const headTop = `
+    <tr>
+      <th rowspan="2">Casos</th>
+      <th colspan="3">Singular</th>
+      <th colspan="3">Plural</th>
+    </tr>
+  `;
+
+  const headBottom = `
+    <tr>
+      <th>Masc.</th>
+      <th>Fem.</th>
+      <th>Neutro</th>
+      <th>Masc.</th>
+      <th>Fem.</th>
+      <th>Neutro</th>
+    </tr>
+  `;
+
+  const body = chart.rows
+    .map((row) => {
+      const caseMeta = getDeclensionCaseMeta(row.caseId);
+      const cellValues = [
+        row.singular.masc,
+        row.singular.fem,
+        row.singular.neut,
+        row.plural.masc,
+        row.plural.fem,
+        row.plural.neut,
+      ];
+
+      const cells = cellValues
+        .map((value) => {
+          if (!value) {
+            return '<td class="declension-empty">—</td>';
+          }
+
+          const greekClass = shouldUseGreekFont(value) ? " greek-text" : "";
+          return `<td class="${greekClass.trim()}">${escapeHtml(value)}</td>`;
+        })
+        .join("");
+
+      return `
+        <tr>
+          <th scope="row">${caseMeta.abbr}</th>
+          ${cells}
+        </tr>
+      `;
+    })
+    .join("");
+
+  return `
+    <table class="declension-table">
+      <thead>
+        ${headTop}
+        ${headBottom}
+      </thead>
+      <tbody>
+        ${body}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderDeclensionCaseGuide() {
+  refs.declensionCaseGuide.innerHTML = DECLENSION_CASES.map(
+    (caseMeta) => `
+      <div class="declension-case-guide__item">
+        <span class="declension-case-guide__tag">${caseMeta.abbr}</span>
+        <span><strong>${caseMeta.label}:</strong> ${caseMeta.functionHint}</span>
+      </div>
+    `
+  ).join("");
+}
+
+function renderDeclensionLab() {
+  if (!refs.declensionTableWrap) {
+    return;
+  }
+
+  const chart = getActiveDeclensionChart();
+
+  refs.declensionChartSelect.innerHTML = declensionCharts
+    .map((declensionChart) => {
+      return `<option value="${declensionChart.id}">${declensionChart.label}</option>`;
+    })
+    .join("");
+  refs.declensionChartSelect.value = chart.id;
+  refs.declensionModeSelect.value =
+    state.declensionTrainerMode === "identify" ? "identify" : "form";
+
+  refs.declensionBoardTitle.textContent = chart.label;
+  refs.declensionBoardNote.textContent = chart.note;
+  refs.declensionTableWrap.innerHTML = renderDeclensionTable(chart);
+  renderDeclensionCaseGuide();
+
+  const accuracy = state.declensionAnswered
+    ? Math.round((state.declensionCorrect / state.declensionAnswered) * 100)
+    : 0;
+
+  refs.declensionAccuracy.textContent = `Precisão ${accuracy}%`;
+  refs.declensionStreak.textContent = `Sequência ${state.declensionStreak}`;
+  refs.declensionBestStreak.textContent = `Melhor ${state.declensionBestStreak}`;
+  refs.declensionCounter.textContent = `${state.declensionAnswered} tentativas`;
+
+  const trainerMode = state.declensionTrainerMode === "identify" ? "identify" : "form";
+  if (
+    !declensionChallenge ||
+    declensionChallenge.chartId !== chart.id ||
+    declensionChallenge.mode !== trainerMode
+  ) {
+    resetDeclensionTrainerState(true);
+  }
+
+  if (!declensionChallenge) {
+    refs.declensionPrompt.innerHTML =
+      '<p class="prompt-panel__concept">Sem dados disponíveis para o treino.</p>';
+    refs.declensionChoices.innerHTML = "";
+    refs.declensionFeedback.className = "feedback";
+    refs.declensionFeedback.textContent =
+      "Selecione outro quadro para continuar o treino.";
+    return;
+  }
+
+  const promptClass = shouldUseGreekFont(declensionChallenge.promptSymbol)
+    ? "prompt-panel__word greek-text"
+    : "prompt-panel__concept";
+
+  refs.declensionPrompt.innerHTML = `
+    <p class="prompt-panel__label">${declensionChallenge.promptLabel}</p>
+    <p class="${promptClass}">${escapeHtml(declensionChallenge.promptSymbol)}</p>
+    <p class="prompt-panel__hint">${declensionChallenge.promptHint}</p>
+  `;
+
+  refs.declensionChoices.innerHTML = declensionChallenge.options
+    .map((option) => {
+      const isCorrect = declensionChoiceLocked && option === declensionChallenge.answer;
+      const isWrong =
+        declensionChoiceLocked &&
+        option === declensionSelectedOption &&
+        !declensionWasCorrect;
+      const buttonClass = [
+        "choice-button",
+        isCorrect ? "is-correct" : "",
+        isWrong ? "is-wrong" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      return `
+        <button class="${buttonClass}" type="button" data-declension-option="${escapeHtml(
+          option
+        )}" ${declensionChoiceLocked ? "disabled" : ""}>
+          ${getChoiceLabelMarkup(option)}
+        </button>
+      `;
+    })
+    .join("");
+
+  refs.declensionChoices
+    .querySelectorAll("[data-declension-option]")
+    .forEach((button) =>
+      button.addEventListener("click", () =>
+        handleDeclensionChoice(button.dataset.declensionOption)
+      )
+    );
+
+  refs.declensionFeedback.className = "feedback";
+
+  if (declensionChoiceLocked) {
+    refs.declensionFeedback.classList.add(
+      declensionWasCorrect ? "feedback--success" : "feedback--error"
+    );
+    refs.declensionFeedback.innerHTML = declensionWasCorrect
+      ? `<strong>Correto.</strong> ${getDeclensionInsight(declensionChallenge)}`
+      : `<strong>Quase.</strong> A resposta correta é <strong class="feedback-answer">${getChoiceLabelMarkup(
+          declensionChallenge.answer
+        )}</strong>. ${getDeclensionInsight(declensionChallenge)}`;
+  } else {
+    refs.declensionFeedback.textContent =
+      "Escolha uma opção para receber correção didática.";
+  }
+}
+
+function resetIntensiveState() {
+  intensiveChoiceLocked = false;
+  intensiveSelectedOption = null;
+  intensiveWasCorrect = null;
+}
+
+function getIntensiveTopicById(topicId) {
+  return intensiveTopics.find((topic) => topic.id === topicId) || intensiveTopics[0];
+}
+
+function getIntensiveQuestionById(questionId) {
+  return intensiveQuestionBank.find((question) => question.id === questionId) || null;
+}
+
+function getIntensiveQuestionsByTopic(topicId = state.intensiveTopicId) {
+  const normalizedTopicId = getIntensiveTopicById(topicId).id;
+
+  if (normalizedTopicId === "all") {
+    return intensiveQuestionBank;
+  }
+
+  return intensiveQuestionBank.filter(
+    (question) => question.lessonKey === normalizedTopicId
+  );
+}
+
+function syncCurrentIntensiveQuestion() {
+  state.intensiveTopicId = getIntensiveTopicById(state.intensiveTopicId).id;
+  const scopedQuestions = getIntensiveQuestionsByTopic(state.intensiveTopicId);
+
+  if (!scopedQuestions.length) {
+    state.intensiveCurrentQuestionId = null;
+    return null;
+  }
+
+  const hasQuestion = scopedQuestions.some(
+    (question) => question.id === state.intensiveCurrentQuestionId
+  );
+
+  if (!hasQuestion) {
+    state.intensiveCurrentQuestionId = scopedQuestions[0].id;
+  }
+
+  return (
+    scopedQuestions.find((question) => question.id === state.intensiveCurrentQuestionId) ||
+    scopedQuestions[0]
+  );
+}
+
+function getCurrentIntensiveQuestion() {
+  return syncCurrentIntensiveQuestion();
+}
+
+function getOrderedIntensiveOptions(question) {
+  const wrongOptions = question.options.filter((option) => option !== question.answer);
+  const correctIndexSeed = createSeedFromString(
+    `intensive:${question.id}:${question.answer}`
+  );
+  const wrongOptionsSeed = createSeedFromString(`intensive:${question.id}:wrongs`);
+  const random = createSeededRandom(wrongOptionsSeed);
+  const shuffledWrongOptions = [...wrongOptions];
+
+  for (let index = shuffledWrongOptions.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [shuffledWrongOptions[index], shuffledWrongOptions[swapIndex]] = [
+      shuffledWrongOptions[swapIndex],
+      shuffledWrongOptions[index],
+    ];
+  }
+
+  const correctIndex = correctIndexSeed % question.options.length;
+  const orderedOptions = [];
+  let wrongOptionIndex = 0;
+
+  for (let index = 0; index < question.options.length; index += 1) {
+    if (index === correctIndex) {
+      orderedOptions.push(question.answer);
+    } else {
+      orderedOptions.push(shuffledWrongOptions[wrongOptionIndex]);
+      wrongOptionIndex += 1;
+    }
+  }
+
+  return orderedOptions;
+}
+
+function pickNextIntensiveQuestionId(random = false) {
+  const scopedQuestions = getIntensiveQuestionsByTopic(state.intensiveTopicId);
+
+  if (!scopedQuestions.length) {
+    return null;
+  }
+
+  if (scopedQuestions.length === 1) {
+    return scopedQuestions[0].id;
+  }
+
+  const currentIndex = scopedQuestions.findIndex(
+    (question) => question.id === state.intensiveCurrentQuestionId
+  );
+  const normalizedCurrentIndex = currentIndex >= 0 ? currentIndex : 0;
+
+  if (random) {
+    let randomQuestion =
+      scopedQuestions[Math.floor(Math.random() * scopedQuestions.length)];
+
+    while (randomQuestion.id === scopedQuestions[normalizedCurrentIndex].id) {
+      randomQuestion = scopedQuestions[Math.floor(Math.random() * scopedQuestions.length)];
+    }
+
+    return randomQuestion.id;
+  }
+
+  const nextIndex = (normalizedCurrentIndex + 1) % scopedQuestions.length;
+  return scopedQuestions[nextIndex].id;
+}
+
+function goToNextIntensiveQuestion({ random = false } = {}) {
+  const nextQuestionId = pickNextIntensiveQuestionId(random);
+
+  if (!nextQuestionId) {
+    return;
+  }
+
+  state.intensiveCurrentQuestionId = nextQuestionId;
+  resetIntensiveState();
+  renderIntensive();
+  saveProgress();
+}
+
+function handleIntensiveChoice(option, question) {
+  if (intensiveChoiceLocked || !question) {
+    return;
+  }
+
+  intensiveChoiceLocked = true;
+  intensiveSelectedOption = option;
+  intensiveWasCorrect = option === question.answer;
+
+  state.intensiveAnswered += 1;
+
+  if (intensiveWasCorrect) {
+    state.intensiveCorrect += 1;
+    state.intensiveStreak += 1;
+    state.intensiveBestStreak = Math.max(
+      state.intensiveBestStreak,
+      state.intensiveStreak
+    );
+  } else {
+    state.intensiveStreak = 0;
+  }
+
+  renderIntensive();
+  saveProgress();
+}
+
+function renderStudyMode() {
+  const mode = state.studyMode === "intensive" ? "intensive" : "journey";
+  state.studyMode = mode;
+
+  refs.modeTabButtons.forEach((button) => {
+    button.classList.toggle("mode-tab--active", button.dataset.mode === mode);
+  });
+
+  refs.paneContents.forEach((pane) => {
+    const paneMode = pane.dataset.pane === "intensive" ? "intensive" : "journey";
+    pane.classList.toggle("pane-content--hidden", paneMode !== mode);
+  });
+}
+
+function renderIntensive() {
+  if (!refs.intensiveTopicSelect) {
+    return;
+  }
+
+  const scopedTopic = getIntensiveTopicById(state.intensiveTopicId);
+  state.intensiveTopicId = scopedTopic.id;
+
+  refs.intensiveTopicSelect.innerHTML = intensiveTopics
+    .map((topic) => `<option value="${topic.id}">${topic.label}</option>`)
+    .join("");
+  refs.intensiveTopicSelect.value = scopedTopic.id;
+
+  const accuracy = state.intensiveAnswered
+    ? Math.round((state.intensiveCorrect / state.intensiveAnswered) * 100)
+    : 0;
+
+  refs.intensiveAnswered.textContent = `${state.intensiveAnswered} questões`;
+  refs.intensiveAccuracy.textContent = `Precisão ${accuracy}%`;
+  refs.intensiveStreak.textContent = `Sequência ${state.intensiveStreak}`;
+  refs.intensiveBestStreak.textContent = `Melhor ${state.intensiveBestStreak}`;
+
+  const question = getCurrentIntensiveQuestion();
+
+  if (!question) {
+    refs.intensiveLessonChip.textContent = "Sem questões";
+    refs.intensivePromptPanel.innerHTML =
+      '<p class="prompt-panel__concept">Não há perguntas disponíveis para este recorte.</p>';
+    refs.intensiveChoices.innerHTML = "";
+    refs.intensiveFeedback.className = "feedback";
+    refs.intensiveFeedback.textContent = "Escolha outro recorte para continuar.";
+    refs.intensiveNextButton.disabled = true;
+    refs.intensiveRandomButton.disabled = true;
+    return;
+  }
+
+  refs.intensiveNextButton.disabled = false;
+  refs.intensiveRandomButton.disabled = false;
+  refs.intensiveLessonChip.textContent = `${question.lessonLabel} • ${question.topicLabel}`;
+
+  const displaySymbol = convertBetaCodeToGreek(question.promptSymbol);
+  const symbolClass = shouldUseGreekFont(displaySymbol)
+    ? "prompt-panel__word greek-text"
+    : "prompt-panel__concept";
+
+  refs.intensivePromptPanel.innerHTML = `
+    <p class="prompt-panel__label">${question.promptLabel}</p>
+    <p class="${symbolClass}">${escapeHtml(displaySymbol)}</p>
+    <p class="prompt-panel__hint">${question.promptHint}</p>
+  `;
+
+  const orderedOptions = getOrderedIntensiveOptions(question);
+
+  refs.intensiveChoices.innerHTML = orderedOptions
+    .map((option) => {
+      const isCorrect = intensiveChoiceLocked && option === question.answer;
+      const isWrong = intensiveChoiceLocked && option === intensiveSelectedOption && !intensiveWasCorrect;
+      const buttonClass = [
+        "choice-button",
+        isCorrect ? "is-correct" : "",
+        isWrong ? "is-wrong" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      return `
+        <button class="${buttonClass}" type="button" data-intensive-option="${escapeHtml(
+          option
+        )}" ${intensiveChoiceLocked ? "disabled" : ""}>
+          ${getChoiceLabelMarkup(option)}
+        </button>
+      `;
+    })
+    .join("");
+
+  refs.intensiveChoices
+    .querySelectorAll("[data-intensive-option]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        handleIntensiveChoice(button.dataset.intensiveOption, question);
+      })
+    );
+
+  refs.intensiveFeedback.className = "feedback";
+
+  if (intensiveChoiceLocked) {
+    refs.intensiveFeedback.classList.add(
+      intensiveWasCorrect ? "feedback--success" : "feedback--error"
+    );
+    refs.intensiveFeedback.innerHTML = intensiveWasCorrect
+      ? `<strong>Correto.</strong> ${question.insight}${getChallengeCoachingMarkup(
+          question
+        )}`
+      : `<strong>Quase.</strong> A resposta correta é <strong class="feedback-answer">${getChoiceLabelMarkup(
+          question.answer
+        )}</strong>. ${question.insight}${getChallengeCoachingMarkup(question)}`;
+  } else {
+    refs.intensiveFeedback.textContent =
+      "Escolha uma opção para receber correção e reforço didático.";
+  }
+}
+
 function loadProgress() {
   const saved = window.localStorage.getItem(STORAGE_KEY);
 
@@ -2925,6 +4600,19 @@ function loadProgress() {
         ...(Array.isArray(parsed.unlockedLessons) ? parsed.unlockedLessons : []),
       ])
     );
+    const intensiveTopicId = getIntensiveTopicById(parsed.intensiveTopicId || "all").id;
+    const scopedIntensiveQuestions = getIntensiveQuestionsByTopic(intensiveTopicId);
+    const intensiveCurrentQuestionId = scopedIntensiveQuestions.some(
+      (question) => question.id === parsed.intensiveCurrentQuestionId
+    )
+      ? parsed.intensiveCurrentQuestionId
+      : scopedIntensiveQuestions[0]?.id || null;
+    const intensiveAnswered = Number.isFinite(parsed.intensiveAnswered)
+      ? Math.max(0, parsed.intensiveAnswered)
+      : 0;
+    const intensiveCorrect = Number.isFinite(parsed.intensiveCorrect)
+      ? Math.max(0, Math.min(parsed.intensiveCorrect, intensiveAnswered))
+      : 0;
 
     return {
       ...clone(defaultProgress),
@@ -2937,6 +4625,34 @@ function loadProgress() {
         ? parsed.masteredCardIds
         : [],
       vocabDeckId: getVocabularyDeckById(parsed.vocabDeckId || "full").id,
+      declensionChartId: getDeclensionChartById(
+        parsed.declensionChartId || defaultProgress.declensionChartId
+      ).id,
+      declensionTrainerMode:
+        parsed.declensionTrainerMode === "identify" ? "identify" : "form",
+      declensionAnswered: Number.isFinite(parsed.declensionAnswered)
+        ? Math.max(0, parsed.declensionAnswered)
+        : 0,
+      declensionCorrect: Number.isFinite(parsed.declensionCorrect)
+        ? Math.max(0, parsed.declensionCorrect)
+        : 0,
+      declensionStreak: Number.isFinite(parsed.declensionStreak)
+        ? Math.max(0, parsed.declensionStreak)
+        : 0,
+      declensionBestStreak: Number.isFinite(parsed.declensionBestStreak)
+        ? Math.max(0, parsed.declensionBestStreak)
+        : 0,
+      studyMode: parsed.studyMode === "intensive" ? "intensive" : "journey",
+      intensiveTopicId,
+      intensiveAnswered,
+      intensiveCorrect,
+      intensiveStreak: Number.isFinite(parsed.intensiveStreak)
+        ? Math.max(0, parsed.intensiveStreak)
+        : 0,
+      intensiveBestStreak: Number.isFinite(parsed.intensiveBestStreak)
+        ? Math.max(0, parsed.intensiveBestStreak)
+        : 0,
+      intensiveCurrentQuestionId,
     };
   } catch (error) {
     return clone(defaultProgress);
@@ -2996,7 +4712,10 @@ function render() {
   renderStats();
   renderModules();
   renderLesson();
+  renderDeclensionLab();
   renderVocabulary();
+  renderIntensive();
+  renderStudyMode();
   saveProgress();
 }
 

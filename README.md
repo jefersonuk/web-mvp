@@ -23,6 +23,7 @@ O projeto passa a usar como referência principal o livro `Noções do Grego Bí
 - Módulo extra de vocabulário para o bloco do aoristo das lições 16 e 17
 - Coleções suplementares de cartões para estudar o aoristo isoladamente
 - Puzzles de declinação para a 2a e a 1a declinações, com correções didáticas
+- Laboratório com quadros completos de declinação e treinador interativo de casos
 
 ## Como abrir
 

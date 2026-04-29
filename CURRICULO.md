@@ -134,6 +134,8 @@ O Módulo 1 agora segue um recorte maior do livro, abrangendo as páginas 11 a 4
 
 Nos módulos nominais, o app agora incorpora puzzles de declinação porque o próprio livro insiste na memorização ativa de flexões, artigos e terminações como parte central da aprendizagem do grego bíblico.
 
+O app também inclui um laboratório de quadros de declinação com todos os casos, número e gênero, além de um treinador interativo para prática contínua de identificação e formação de formas.
+
 ## Regra de uso do livro no projeto
 
 O livro será usado como espinha dorsal curricular e referência conceitual. O game deve transformar essa base em atividades originais, feedbacks próprios, trilhas progressivas e desafios exegéticos, evitando copiar longos trechos do conteúdo.

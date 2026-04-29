@@ -80,7 +80,26 @@
           </article>
         </section>
 
-        <section class="workspace">
+        <section class="mode-tabs" aria-label="Modo de estudo">
+          <button
+            id="tab-journey-button"
+            type="button"
+            class="mode-tab mode-tab--active"
+            data-mode="journey"
+          >
+            Jornada
+          </button>
+          <button
+            id="tab-intensive-button"
+            type="button"
+            class="mode-tab"
+            data-mode="intensive"
+          >
+            Intensivo para Prova
+          </button>
+        </section>
+
+        <section class="workspace pane-content" data-pane="journey">
           <div class="path-card">
             <div class="section-heading">
               <p class="eyebrow">Mapa formativo</p>
@@ -125,7 +144,80 @@
           </div>
         </section>
 
-        <section class="vocab-section">
+        <section class="declension-section pane-content" data-pane="journey">
+          <div class="declension-section__header section-heading">
+            <p class="eyebrow">Laboratório nominal</p>
+            <h2>Quadros de declinações e treino guiado</h2>
+            <p class="lesson-explanation">
+              Tabelas completas por caso, número e gênero no formato de
+              referência, com puzzle interativo para transformar paradigma em
+              leitura real.
+            </p>
+          </div>
+
+          <div class="declension-toolbar">
+            <label class="search-field" for="declension-chart-select">
+              <span class="search-field__label">Quadro de declinação</span>
+              <select id="declension-chart-select" class="search-field__input"></select>
+            </label>
+
+            <label class="search-field" for="declension-mode-select">
+              <span class="search-field__label">Modo de treino</span>
+              <select id="declension-mode-select" class="search-field__input">
+                <option value="form">Montar forma</option>
+                <option value="identify">Identificar análise</option>
+              </select>
+            </label>
+
+            <div class="declension-metrics" aria-live="polite">
+              <span id="declension-accuracy" class="lesson-chip">Precisão 0%</span>
+              <span id="declension-streak" class="lesson-chip lesson-chip--soft">
+                Sequência 0
+              </span>
+              <span id="declension-best-streak" class="lesson-chip lesson-chip--soft">
+                Melhor 0
+              </span>
+            </div>
+          </div>
+
+          <div class="declension-grid">
+            <article class="declension-board">
+              <div class="declension-board__top">
+                <div>
+                  <p class="eyebrow">Quadro ativo</p>
+                  <h3 id="declension-board-title">Carregando quadro</h3>
+                </div>
+                <span id="declension-board-note" class="challenge-counter">
+                  8 casos
+                </span>
+              </div>
+
+              <div id="declension-table-wrap" class="declension-table-wrap"></div>
+              <div id="declension-case-guide" class="declension-case-guide"></div>
+            </article>
+
+            <article class="declension-trainer">
+              <div class="challenge-card__header">
+                <p class="eyebrow">Puzzle de declinação</p>
+                <span id="declension-counter" class="challenge-counter">0 tentativas</span>
+              </div>
+
+              <div id="declension-prompt" class="prompt-panel"></div>
+              <div id="declension-choices" class="choices"></div>
+              <div id="declension-feedback" class="feedback" aria-live="polite">
+                Escolha uma opção para receber correção didática.
+              </div>
+
+              <div class="lesson-actions">
+                <button id="declension-next-button" class="button button--primary">
+                  Novo puzzle
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="vocab-section pane-content" data-pane="journey">
           <div class="vocab-section__header section-heading">
             <p class="eyebrow">Vocabulário base</p>
             <h2>Coleções de estudo em cartões</h2>
@@ -221,7 +313,57 @@
           </div>
         </section>
 
-        <section class="notes-grid">
+        <section class="intensive-section pane-content pane-content--hidden" data-pane="intensive">
+          <div class="section-heading intensive-section__header">
+            <p class="eyebrow">Aulas 27 a 32</p>
+            <h2>Intensivo para prova</h2>
+            <p class="lesson-explanation">
+              Treino focado em pronomes demonstrativos, aoristo do indicativo ativo,
+              preposições, particípio presente ativo e pronomes indefinidos.
+            </p>
+          </div>
+
+          <div class="intensive-toolbar">
+            <label class="search-field" for="intensive-topic-select">
+              <span class="search-field__label">Recorte da revisão</span>
+              <select id="intensive-topic-select" class="search-field__input"></select>
+            </label>
+
+            <div class="intensive-metrics" aria-live="polite">
+              <span id="intensive-answered" class="lesson-chip">0 questões</span>
+              <span id="intensive-accuracy" class="lesson-chip">Precisão 0%</span>
+              <span id="intensive-streak" class="lesson-chip lesson-chip--soft">Sequência 0</span>
+              <span id="intensive-best-streak" class="lesson-chip lesson-chip--soft">Melhor 0</span>
+            </div>
+          </div>
+
+          <article class="intensive-card challenge-card">
+            <div class="challenge-card__header">
+              <p class="eyebrow">Questão ativa</p>
+              <span id="intensive-lesson-chip" class="challenge-counter">Aula</span>
+            </div>
+
+            <div id="intensive-prompt-panel" class="prompt-panel"></div>
+            <div id="intensive-choices" class="choices"></div>
+            <div id="intensive-feedback" class="feedback" aria-live="polite">
+              Escolha uma opção para receber correção e reforço didático.
+            </div>
+
+            <div class="lesson-actions">
+              <button id="intensive-next-button" class="button button--primary">
+                Próxima questão
+              </button>
+              <button id="intensive-random-button" class="button button--ghost">
+                Questão aleatória
+              </button>
+              <button id="intensive-reset-button" class="button button--ghost">
+                Zerar intensivo
+              </button>
+            </div>
+          </article>
+        </section>
+
+        <section class="notes-grid pane-content" data-pane="journey">
           <article class="note-card">
             <p class="eyebrow">Fonte-base</p>
             <h3>Currículo ancorado no livro</h3>
