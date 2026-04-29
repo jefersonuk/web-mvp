@@ -682,9 +682,24 @@ h3 {
   font-weight: 700;
 }
 
-.declension-table tbody td.greek-text {
+.declension-cell {
+  vertical-align: middle;
+}
+
+.declension-cell__greek {
+  display: block;
   color: #176daa;
   font-size: 1.24rem;
+  font-weight: 700;
+  line-height: 1.08;
+}
+
+.declension-cell__translation {
+  display: block;
+  margin-top: 6px;
+  color: #4d5b86;
+  font-size: 0.75rem;
+  line-height: 1.25;
   font-weight: 700;
 }
 

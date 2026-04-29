@@ -1702,10 +1702,34 @@ function createDeclensionRow(
   singularNeut,
   pluralMasc,
   pluralFem,
-  pluralNeut
+  pluralNeut,
+  glosses = null
 ) {
   return {
     caseId,
+    singular: {
+      masc: singularMasc,
+      fem: singularFem,
+      neut: singularNeut,
+    },
+    plural: {
+      masc: pluralMasc,
+      fem: pluralFem,
+      neut: pluralNeut,
+    },
+    glosses,
+  };
+}
+
+function createDeclensionGlossRow(
+  singularMasc,
+  singularFem,
+  singularNeut,
+  pluralMasc,
+  pluralFem,
+  pluralNeut
+) {
+  return {
     singular: {
       masc: singularMasc,
       fem: singularFem,
@@ -1830,13 +1854,111 @@ const declensionCharts = [
     label: "Pronome demonstrativo (οὗτος, αὕτη, τοῦτο)",
     note: "Quadro completo de proximidade da aula 27.",
     rows: [
-      createDeclensionRow("nom", "οὗτος", "αὕτη", "τοῦτο", "οὗτοι", "αὗται", "ταῦτα"),
-      createDeclensionRow("gen", "τούτου", "ταύτης", "τούτου", "τούτων", "τούτων", "τούτων"),
-      createDeclensionRow("abl", "τούτου", "ταύτης", "τούτου", "τούτων", "τούτων", "τούτων"),
-      createDeclensionRow("loc", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
-      createDeclensionRow("ins", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
-      createDeclensionRow("dat", "τούτῳ", "ταύτῃ", "τούτῳ", "τούτοις", "ταύταις", "τούτοις"),
-      createDeclensionRow("ac", "τοῦτον", "ταύτην", "τοῦτο", "τούτους", "ταύτας", "ταῦτα"),
+      createDeclensionRow(
+        "nom",
+        "οὗτος",
+        "αὕτη",
+        "τοῦτο",
+        "οὗτοι",
+        "αὗται",
+        "ταῦτα",
+        createDeclensionGlossRow("este", "esta", "isto", "estes", "estas", "estas coisas")
+      ),
+      createDeclensionRow(
+        "gen",
+        "τούτου",
+        "ταύτης",
+        "τούτου",
+        "τούτων",
+        "τούτων",
+        "τούτων",
+        createDeclensionGlossRow(
+          "deste",
+          "desta",
+          "disto",
+          "destes",
+          "destas",
+          "destas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "abl",
+        "τούτου",
+        "ταύτης",
+        "τούτου",
+        "τούτων",
+        "τούτων",
+        "τούτων",
+        createDeclensionGlossRow(
+          "deste (origem)",
+          "desta (origem)",
+          "disto (origem)",
+          "destes (origem)",
+          "destas (origem)",
+          "destas coisas (origem)"
+        )
+      ),
+      createDeclensionRow(
+        "loc",
+        "τούτῳ",
+        "ταύτῃ",
+        "τούτῳ",
+        "τούτοις",
+        "ταύταις",
+        "τούτοις",
+        createDeclensionGlossRow(
+          "neste",
+          "nesta",
+          "nisto",
+          "nestes",
+          "nestas",
+          "nestas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "ins",
+        "τούτῳ",
+        "ταύτῃ",
+        "τούτῳ",
+        "τούτοις",
+        "ταύταις",
+        "τούτοις",
+        createDeclensionGlossRow(
+          "com este",
+          "com esta",
+          "com isto",
+          "com estes",
+          "com estas",
+          "com estas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "dat",
+        "τούτῳ",
+        "ταύτῃ",
+        "τούτῳ",
+        "τούτοις",
+        "ταύταις",
+        "τούτοις",
+        createDeclensionGlossRow("a este", "a esta", "a isto", "a estes", "a estas", "a estas coisas")
+      ),
+      createDeclensionRow(
+        "ac",
+        "τοῦτον",
+        "ταύτην",
+        "τοῦτο",
+        "τούτους",
+        "ταύτας",
+        "ταῦτα",
+        createDeclensionGlossRow(
+          "este (obj.)",
+          "esta (obj.)",
+          "isto (obj.)",
+          "estes (obj.)",
+          "estas (obj.)",
+          "estas coisas (obj.)"
+        )
+      ),
       createDeclensionRow("voc", null, null, null, null, null, null),
     ],
   },
@@ -1845,13 +1967,125 @@ const declensionCharts = [
     label: "Pronome demonstrativo (ἐκεῖνος, ἐκείνη, ἐκεῖνο)",
     note: "Quadro completo de distância da aula 28.",
     rows: [
-      createDeclensionRow("nom", "ἐκεῖνος", "ἐκείνη", "ἐκεῖνο", "ἐκεῖνοι", "ἐκεῖναι", "ἐκεῖνα"),
-      createDeclensionRow("gen", "ἐκείνου", "ἐκείνης", "ἐκείνου", "ἐκείνων", "ἐκείνων", "ἐκείνων"),
-      createDeclensionRow("abl", "ἐκείνου", "ἐκείνης", "ἐκείνου", "ἐκείνων", "ἐκείνων", "ἐκείνων"),
-      createDeclensionRow("loc", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
-      createDeclensionRow("ins", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
-      createDeclensionRow("dat", "ἐκείνῳ", "ἐκείνῃ", "ἐκείνῳ", "ἐκείνοις", "ἐκείναις", "ἐκείνοις"),
-      createDeclensionRow("ac", "ἐκεῖνον", "ἐκείνην", "ἐκεῖνο", "ἐκείνους", "ἐκείνας", "ἐκεῖνα"),
+      createDeclensionRow(
+        "nom",
+        "ἐκεῖνος",
+        "ἐκείνη",
+        "ἐκεῖνο",
+        "ἐκεῖνοι",
+        "ἐκεῖναι",
+        "ἐκεῖνα",
+        createDeclensionGlossRow(
+          "aquele",
+          "aquela",
+          "aquilo",
+          "aqueles",
+          "aquelas",
+          "aquelas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "gen",
+        "ἐκείνου",
+        "ἐκείνης",
+        "ἐκείνου",
+        "ἐκείνων",
+        "ἐκείνων",
+        "ἐκείνων",
+        createDeclensionGlossRow(
+          "daquele",
+          "daquela",
+          "daquilo",
+          "daqueles",
+          "daquelas",
+          "daquelas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "abl",
+        "ἐκείνου",
+        "ἐκείνης",
+        "ἐκείνου",
+        "ἐκείνων",
+        "ἐκείνων",
+        "ἐκείνων",
+        createDeclensionGlossRow(
+          "daquele (origem)",
+          "daquela (origem)",
+          "daquilo (origem)",
+          "daqueles (origem)",
+          "daquelas (origem)",
+          "daquelas coisas (origem)"
+        )
+      ),
+      createDeclensionRow(
+        "loc",
+        "ἐκείνῳ",
+        "ἐκείνῃ",
+        "ἐκείνῳ",
+        "ἐκείνοις",
+        "ἐκείναις",
+        "ἐκείνοις",
+        createDeclensionGlossRow(
+          "naquele",
+          "naquela",
+          "naquilo",
+          "naqueles",
+          "naquelas",
+          "naquelas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "ins",
+        "ἐκείνῳ",
+        "ἐκείνῃ",
+        "ἐκείνῳ",
+        "ἐκείνοις",
+        "ἐκείναις",
+        "ἐκείνοις",
+        createDeclensionGlossRow(
+          "com aquele",
+          "com aquela",
+          "com aquilo",
+          "com aqueles",
+          "com aquelas",
+          "com aquelas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "dat",
+        "ἐκείνῳ",
+        "ἐκείνῃ",
+        "ἐκείνῳ",
+        "ἐκείνοις",
+        "ἐκείναις",
+        "ἐκείνοις",
+        createDeclensionGlossRow(
+          "àquele",
+          "àquela",
+          "àquilo",
+          "àqueles",
+          "àquelas",
+          "àquelas coisas"
+        )
+      ),
+      createDeclensionRow(
+        "ac",
+        "ἐκεῖνον",
+        "ἐκείνην",
+        "ἐκεῖνο",
+        "ἐκείνους",
+        "ἐκείνας",
+        "ἐκεῖνα",
+        createDeclensionGlossRow(
+          "aquele (obj.)",
+          "aquela (obj.)",
+          "aquilo (obj.)",
+          "aqueles (obj.)",
+          "aquelas (obj.)",
+          "aquelas coisas (obj.)"
+        )
+      ),
       createDeclensionRow("voc", null, null, null, null, null, null),
     ],
   },
@@ -4160,22 +4394,52 @@ function renderDeclensionTable(chart) {
     .map((row) => {
       const caseMeta = getDeclensionCaseMeta(row.caseId);
       const cellValues = [
-        row.singular.masc,
-        row.singular.fem,
-        row.singular.neut,
-        row.plural.masc,
-        row.plural.fem,
-        row.plural.neut,
+        {
+          form: row.singular.masc,
+          gloss: row.glosses?.singular?.masc || "",
+        },
+        {
+          form: row.singular.fem,
+          gloss: row.glosses?.singular?.fem || "",
+        },
+        {
+          form: row.singular.neut,
+          gloss: row.glosses?.singular?.neut || "",
+        },
+        {
+          form: row.plural.masc,
+          gloss: row.glosses?.plural?.masc || "",
+        },
+        {
+          form: row.plural.fem,
+          gloss: row.glosses?.plural?.fem || "",
+        },
+        {
+          form: row.plural.neut,
+          gloss: row.glosses?.plural?.neut || "",
+        },
       ];
 
       const cells = cellValues
-        .map((value) => {
-          if (!value) {
+        .map((cell) => {
+          if (!cell.form) {
             return '<td class="declension-empty">—</td>';
           }
 
-          const greekClass = shouldUseGreekFont(value) ? " greek-text" : "";
-          return `<td class="${greekClass.trim()}">${escapeHtml(value)}</td>`;
+          const displayForm = convertBetaCodeToGreek(cell.form);
+          const formClass = shouldUseGreekFont(displayForm)
+            ? "declension-cell__greek greek-text"
+            : "declension-cell__greek";
+          const glossMarkup = cell.gloss
+            ? `<span class="declension-cell__translation">${escapeHtml(cell.gloss)}</span>`
+            : "";
+
+          return `
+            <td class="declension-cell">
+              <span class="${formClass}">${escapeHtml(displayForm)}</span>
+              ${glossMarkup}
+            </td>
+          `;
         })
         .join("");
 
