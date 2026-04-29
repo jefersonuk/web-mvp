@@ -622,7 +622,7 @@ h3 {
 
 .declension-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 940px;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -655,7 +655,25 @@ h3 {
   background: #e8edf9;
   color: #2b3557;
   font-weight: 800;
-  min-width: 104px;
+  min-width: 240px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.declension-case-cell__abbr {
+  display: block;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.declension-case-cell__gloss {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: #4d5b86;
+  font-weight: 700;
 }
 
 .declension-table tbody td {

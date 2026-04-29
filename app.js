@@ -1630,48 +1630,56 @@ const DECLENSION_CASES = [
     id: "nom",
     abbr: "Nom.",
     label: "Nominativo",
+    directGloss: "quem? o quê? (sujeito)",
     functionHint: "Normalmente marca sujeito ou predicativo do sujeito.",
   },
   {
     id: "gen",
     abbr: "Gen.",
     label: "Genitivo",
+    directGloss: "de / da / dos / das",
     functionHint: "Costuma marcar posse, especificação ou qualificação.",
   },
   {
     id: "abl",
     abbr: "Abl.",
     label: "Ablativo",
+    directGloss: "de (origem, saída)",
     functionHint: "Costuma marcar origem, procedência ou separação.",
   },
   {
     id: "loc",
     abbr: "Loc.",
     label: "Locativo",
+    directGloss: "em / no / na",
     functionHint: "Costuma marcar localização: onde algo ocorre.",
   },
   {
     id: "ins",
     abbr: "Ins.",
     label: "Instrumental",
+    directGloss: "com / por meio de",
     functionHint: "Costuma marcar meio, instrumento ou associação.",
   },
   {
     id: "dat",
     abbr: "Dat.",
     label: "Dativo",
+    directGloss: "a / para",
     functionHint: "Costuma marcar interesse pessoal: a/para quem.",
   },
   {
     id: "ac",
     abbr: "Ac.",
     label: "Acusativo",
+    directGloss: "quem? o quê? (obj. dir.)",
     functionHint: "Costuma marcar objeto direto ou alvo da ação.",
   },
   {
     id: "voc",
     abbr: "Voc.",
     label: "Vocativo",
+    directGloss: "ó! (chamado)",
     functionHint: "Marca invocação ou chamado direto.",
   },
 ];
@@ -4173,7 +4181,10 @@ function renderDeclensionTable(chart) {
 
       return `
         <tr>
-          <th scope="row">${caseMeta.abbr}</th>
+          <th scope="row">
+            <span class="declension-case-cell__abbr">${caseMeta.abbr}</span>
+            <span class="declension-case-cell__gloss">${caseMeta.directGloss}</span>
+          </th>
           ${cells}
         </tr>
       `;
@@ -4198,7 +4209,7 @@ function renderDeclensionCaseGuide() {
     (caseMeta) => `
       <div class="declension-case-guide__item">
         <span class="declension-case-guide__tag">${caseMeta.abbr}</span>
-        <span><strong>${caseMeta.label}:</strong> ${caseMeta.functionHint}</span>
+        <span><strong>${caseMeta.label} (${caseMeta.directGloss}):</strong> ${caseMeta.functionHint}</span>
       </div>
     `
   ).join("");
