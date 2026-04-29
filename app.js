@@ -1743,11 +1743,90 @@ function createDeclensionGlossRow(
   };
 }
 
+function stripLeadingPortugueseArticle(value) {
+  return String(value || "").replace(/^(o|a|os|as)\s+/i, "").trim();
+}
+
+function normalizePortugueseContractions(value) {
+  return String(value || "")
+    .replace(/\bde o\b/gi, "do")
+    .replace(/\bde a\b/gi, "da")
+    .replace(/\bde os\b/gi, "dos")
+    .replace(/\bde as\b/gi, "das")
+    .replace(/\bem o\b/gi, "no")
+    .replace(/\bem a\b/gi, "na")
+    .replace(/\bem os\b/gi, "nos")
+    .replace(/\bem as\b/gi, "nas")
+    .replace(/\ba o\b/gi, "ao")
+    .replace(/\ba a\b/gi, "à")
+    .replace(/\ba os\b/gi, "aos")
+    .replace(/\ba as\b/gi, "às")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function inflectDeclensionGloss(caseId, baseGloss) {
+  const base = String(baseGloss || "").trim();
+
+  if (!base) {
+    return "";
+  }
+
+  switch (caseId) {
+    case "nom":
+      return base;
+    case "gen":
+      return normalizePortugueseContractions(`de ${base}`);
+    case "abl":
+      return `${normalizePortugueseContractions(`de ${base}`)} (origem)`;
+    case "loc":
+      return normalizePortugueseContractions(`em ${base}`);
+    case "ins":
+      return normalizePortugueseContractions(`com ${base}`);
+    case "dat":
+      return normalizePortugueseContractions(`a ${base}`);
+    case "ac":
+      return `${base} (obj.)`;
+    case "voc":
+      return `ó ${stripLeadingPortugueseArticle(base)}`;
+    default:
+      return base;
+  }
+}
+
+function getDeclensionCellGloss(chart, row, numberId, genderId) {
+  const explicitGloss = row.glosses?.[numberId]?.[genderId];
+
+  if (explicitGloss) {
+    return explicitGloss;
+  }
+
+  const baseGloss = chart.translationBase?.[numberId]?.[genderId];
+
+  if (!baseGloss) {
+    return "";
+  }
+
+  return inflectDeclensionGloss(row.caseId, baseGloss);
+}
+
 const declensionCharts = [
   {
     id: "article",
     label: "Artigo grego (ὁ, ἡ, τό)",
     note: "Quadro do artigo definido com os oito casos funcionais.",
+    translationBase: {
+      singular: {
+        masc: "o",
+        fem: "a",
+        neut: "o",
+      },
+      plural: {
+        masc: "os",
+        fem: "as",
+        neut: "os",
+      },
+    },
     rows: [
       createDeclensionRow("nom", "ὁ", "ἡ", "τό", "οἱ", "αἱ", "τά"),
       createDeclensionRow("gen", "τοῦ", "τῆς", "τοῦ", "τῶν", "τῶν", "τῶν"),
@@ -1763,6 +1842,18 @@ const declensionCharts = [
     id: "second-declension",
     label: "2ª Declinação (λόγος, ὁδός, ἔργον)",
     note: "Paradigma comparado: masc., fem. e neutro em temas de 2ª declinação.",
+    translationBase: {
+      singular: {
+        masc: "a palavra",
+        fem: "o caminho",
+        neut: "a obra",
+      },
+      plural: {
+        masc: "as palavras",
+        fem: "os caminhos",
+        neut: "as obras",
+      },
+    },
     rows: [
       createDeclensionRow("nom", "λόγος", "ὁδός", "ἔργον", "λόγοι", "ὁδοί", "ἔργα"),
       createDeclensionRow("gen", "λόγου", "ὁδοῦ", "ἔργου", "λόγων", "ὁδῶν", "ἔργων"),
@@ -1778,6 +1869,18 @@ const declensionCharts = [
     id: "first-declension-alpha-kept",
     label: "1ª Declinação Fem. (σοφία)",
     note: "Grupo em -α precedido por ε, ι ou ρ: o alfa tende a permanecer no singular.",
+    translationBase: {
+      singular: {
+        masc: null,
+        fem: "a sabedoria",
+        neut: null,
+      },
+      plural: {
+        masc: null,
+        fem: "as sabedorias",
+        neut: null,
+      },
+    },
     rows: [
       createDeclensionRow("nom", null, "σοφία", null, null, "σοφίαι", null),
       createDeclensionRow("gen", null, "σοφίας", null, null, "σοφιῶν", null),
@@ -1793,6 +1896,18 @@ const declensionCharts = [
     id: "first-declension-alpha-shift",
     label: "1ª Declinação Fem. (γλῶσσα)",
     note: "Grupo em -α sem ε/ι/ρ antes do alfa: no singular, α passa para η em formas centrais.",
+    translationBase: {
+      singular: {
+        masc: null,
+        fem: "a língua",
+        neut: null,
+      },
+      plural: {
+        masc: null,
+        fem: "as línguas",
+        neut: null,
+      },
+    },
     rows: [
       createDeclensionRow("nom", null, "γλῶσσα", null, null, "γλῶσσαι", null),
       createDeclensionRow("gen", null, "γλώσσης", null, null, "γλωσσῶν", null),
@@ -1808,6 +1923,18 @@ const declensionCharts = [
     id: "first-declension-eta",
     label: "1ª Declinação Fem. (ἀγάπη)",
     note: "Grupo em -η: o eta permanece ao longo do singular.",
+    translationBase: {
+      singular: {
+        masc: null,
+        fem: "o amor",
+        neut: null,
+      },
+      plural: {
+        masc: null,
+        fem: "os amores",
+        neut: null,
+      },
+    },
     rows: [
       createDeclensionRow("nom", null, "ἀγάπη", null, null, "ἀγάπαι", null),
       createDeclensionRow("gen", null, "ἀγάπης", null, null, "ἀγαπῶν", null),
@@ -1823,6 +1950,18 @@ const declensionCharts = [
     id: "first-declension-masc-as",
     label: "1ª Declinação Masc. (νεανίας)",
     note: "Masculinos em -ας: artigo masculino e genitivo singular em -ου.",
+    translationBase: {
+      singular: {
+        masc: "o jovem",
+        fem: null,
+        neut: null,
+      },
+      plural: {
+        masc: "os jovens",
+        fem: null,
+        neut: null,
+      },
+    },
     rows: [
       createDeclensionRow("nom", "νεανίας", null, null, "νεανίαι", null, null),
       createDeclensionRow("gen", "νεανίου", null, null, "νεανιῶν", null, null),
@@ -1838,6 +1977,18 @@ const declensionCharts = [
     id: "first-declension-masc-es",
     label: "1ª Declinação Masc. (προφήτης)",
     note: "Masculinos em -ης: artigo masculino e vocativo singular próprio.",
+    translationBase: {
+      singular: {
+        masc: "o profeta",
+        fem: null,
+        neut: null,
+      },
+      plural: {
+        masc: "os profetas",
+        fem: null,
+        neut: null,
+      },
+    },
     rows: [
       createDeclensionRow("nom", "προφήτης", null, null, "προφῆται", null, null),
       createDeclensionRow("gen", "προφήτου", null, null, "προφητῶν", null, null),
@@ -2093,6 +2244,18 @@ const declensionCharts = [
     id: "present-active-participle",
     label: "Particípio presente ativo (λύων, λύουσα, λῦον)",
     note: "Quadro completo do particípio presente ativo da aula 31.",
+    translationBase: {
+      singular: {
+        masc: "o que solta",
+        fem: "a que solta",
+        neut: "o que solta",
+      },
+      plural: {
+        masc: "os que soltam",
+        fem: "as que soltam",
+        neut: "as coisas que soltam",
+      },
+    },
     rows: [
       createDeclensionRow("nom", "λύων", "λύουσα", "λῦον", "λύοντες", "λύουσαι", "λύοντα"),
       createDeclensionRow("gen", "λύοντος", "λυούσης", "λύοντος", "λυόντων", "λυουσῶν", "λυόντων"),
@@ -2108,6 +2271,18 @@ const declensionCharts = [
     id: "indefinite-pronoun",
     label: "Pronome indefinido (τις, τι)",
     note: "Quadro completo do pronome indefinido da aula 32.",
+    translationBase: {
+      singular: {
+        masc: "alguém",
+        fem: "alguém",
+        neut: "algo",
+      },
+      plural: {
+        masc: "alguns",
+        fem: "algumas",
+        neut: "algumas coisas",
+      },
+    },
     rows: [
       createDeclensionRow("nom", "τις", "τις", "τι", "τινές", "τινές", "τινά"),
       createDeclensionRow("gen", "τινός", "τινός", "τινός", "τινῶν", "τινῶν", "τινῶν"),
@@ -4395,28 +4570,34 @@ function renderDeclensionTable(chart) {
       const caseMeta = getDeclensionCaseMeta(row.caseId);
       const cellValues = [
         {
+          numberId: "singular",
+          genderId: "masc",
           form: row.singular.masc,
-          gloss: row.glosses?.singular?.masc || "",
         },
         {
+          numberId: "singular",
+          genderId: "fem",
           form: row.singular.fem,
-          gloss: row.glosses?.singular?.fem || "",
         },
         {
+          numberId: "singular",
+          genderId: "neut",
           form: row.singular.neut,
-          gloss: row.glosses?.singular?.neut || "",
         },
         {
+          numberId: "plural",
+          genderId: "masc",
           form: row.plural.masc,
-          gloss: row.glosses?.plural?.masc || "",
         },
         {
+          numberId: "plural",
+          genderId: "fem",
           form: row.plural.fem,
-          gloss: row.glosses?.plural?.fem || "",
         },
         {
+          numberId: "plural",
+          genderId: "neut",
           form: row.plural.neut,
-          gloss: row.glosses?.plural?.neut || "",
         },
       ];
 
@@ -4430,8 +4611,14 @@ function renderDeclensionTable(chart) {
           const formClass = shouldUseGreekFont(displayForm)
             ? "declension-cell__greek greek-text"
             : "declension-cell__greek";
-          const glossMarkup = cell.gloss
-            ? `<span class="declension-cell__translation">${escapeHtml(cell.gloss)}</span>`
+          const cellGloss = getDeclensionCellGloss(
+            chart,
+            row,
+            cell.numberId,
+            cell.genderId
+          );
+          const glossMarkup = cellGloss
+            ? `<span class="declension-cell__translation">${escapeHtml(cellGloss)}</span>`
             : "";
 
           return `
